@@ -138,10 +138,10 @@
 
   <main>
     <section style="text-align: left;">
-  <p><strong>My name is Andrey Flat</strong>, and I am a computer graphics artist with over two decades of experience in visual storytelling and digital effects.</p>
-  <p><em>My journey began in 2003</em> with an interest in machinima, where I explored creative workflows using tools like <strong>Sony Vegas</strong>, <strong>Daz 3D</strong>, and <strong>3ds Max</strong>. In 2008, I transitioned into professional video editing for television, focusing primarily on <strong>Adobe After Effects</strong>.</p>
-  <p>In 2011, I joined a film studio where I expanded my expertise into <strong>color grading</strong>, <strong>compositing</strong>, and ultimately took on the role of <strong>visual effects supervisor</strong>. During this time, I worked with industry-standard tools such as <strong>Final Cut</strong>, <strong>DaVinci Resolve</strong>, <strong>Cinema 4D</strong>, <strong>Naiad</strong>, and <strong>Houdini</strong>.</p>
-  <p>In 2014, I founded my own studio, AEVA, and since 2017, I’ve been working independently as a freelance artist. Today, I specialize in <strong>procedural</strong> and <strong>generative visual effects</strong> using <strong>Houdini</strong>, <strong>Nuke</strong>, and <strong>ComfyUI</strong> — tools that allow me to push the boundaries of motion graphics and visual design.</p>
+  <p>Welcome to the personal space of CG artist Andrey Flat. This is a curated selection of works spanning the past 20 years.</p>
+  <p><em>Andrey began his creative journey in 2003 with machinima, experimenting with Sony Vegas, Daz 3D, and 3ds Max. By 2008, he was working as a television video editor, focusing on After Effects.</p>
+  <p>In 2011, he joined a film studio, advancing to VFX supervisor while mastering tools like Final Cut, DaVinci Resolve, Cinema 4D, Naiad, and Houdini.</p>
+  <p>Since 2014, he has worked independently, specializing in procedural and generative effects with Houdini, Nuke, Touchdesigner and ComfyUI.</p>
 </section>
 <section>
   <div class="video-container">
@@ -175,44 +175,47 @@
 <script>
   const videoSources = [
     {
-      src: "videos/project1.mp4",
-      poster: "videos/project1.jpg",
-      title: "Nebula Dance",
-      description: "Procedural particles with VEX"
+      src: "videos/project_01.mp4",
+            title: "Dry Season",
+      description: "Personal project. Vellum cloth simulation"
     },
     {
-      src: "videos/project2.mp4",
-      poster: "videos/project2.jpg",
+      src: "videos/project_02.mp4",
+      title: "SALUKI",
+      description: "Music video. Large water FLIP simulation."
+    },
+    {
+      src: "videos/project_03.mp4",
       title: "Liquid Temple",
       description: "FLIP simulation with refractive shading"
     },
     {
-      src: "videos/project2.mp4",
-      poster: "videos/project2.jpg",
+      src: "videos/project_04.mp4",
       title: "Liquid Temple",
       description: "FLIP simulation with refractive shading"
     },
     {
-      src: "videos/project2.mp4",
-      poster: "videos/project2.jpg",
+      src: "videos/project_05.mp4",
       title: "Liquid Temple",
       description: "FLIP simulation with refractive shading"
     },
     {
-      src: "videos/project2.mp4",
-      poster: "videos/project2.jpg",
+      src: "videos/project_06.mp4",
       title: "Liquid Temple",
       description: "FLIP simulation with refractive shading"
     },
     {
-      src: "videos/project2.mp4",
-      poster: "videos/project2.jpg",
+      src: "videos/project_07.mp4",
       title: "Liquid Temple",
       description: "FLIP simulation with refractive shading"
     },
     {
-      src: "videos/project3.mp4",
-      poster: "videos/project3.jpg",
+      src: "videos/project_08.mp4",
+      title: "Liquid Temple",
+      description: "FLIP simulation with refractive shading"
+    },
+    {
+      src: "videos/project_09.mp4",
       title: "Stone Flow",
       description: "RBD system driven by curves and noise"
     }
@@ -222,19 +225,18 @@
 
   function loadVideos(startIndex, count) {
     for (let i = startIndex; i < Math.min(startIndex + count, videoSources.length); i++) {
-      const { src, poster, title, description } = videoSources[i];
+      const { src, title, description } = videoSources[i];
 
       const tile = document.createElement('div');
       tile.className = 'video-tile fade-in';
 
       const video = document.createElement('video');
-      video.src = src;
-      video.poster = poster;
+      video.poster = `${src.replace(/\.mp4$/, '.jpg')}`;
       video.muted = true;
       video.loop = true;
       video.preload = 'none';
       video.playsInline = true;
-      video.setAttribute('loading', 'lazy');
+      video.dataset.src = src;
 
       const caption = document.createElement('div');
       caption.className = 'caption';
@@ -244,9 +246,13 @@
       tile.appendChild(caption);
       videoGrid.appendChild(tile);
 
-      observer.observe(tile);
+      fadeObserver.observe(tile);
+      videoObserver.observe(video);
 
-      tile.addEventListener('mouseenter', () => video.play());
+      tile.addEventListener('mouseenter', () => {
+        if (!video.src) video.src = video.dataset.src;
+        video.play();
+      });
       tile.addEventListener('mouseleave', () => {
         video.pause();
         video.currentTime = 0;
@@ -266,13 +272,25 @@
     }
   }
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+  const fadeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+const videoObserver = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const video = entry.target;
+      if (!video.src) {
+        video.src = video.dataset.src;
       }
-    });
-  }, { threshold: 0.1 });
+      observer.unobserve(video);
+    }
+  });
+}, { rootMargin: '200px 0px' });
 
   window.addEventListener('scroll', handleScroll);
   window.addEventListener('load', () => {
