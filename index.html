@@ -185,41 +185,49 @@
       src: "videos/project_02.mp4",
       title: "SALUKI",
       description: "Music video. Large water FLIP simulation."
+      link: "https://www.behance.net/gallery/181128113/Large-Water"
     },
     {
       src: "videos/project_03.mp4",
-      title: "Coming Soon",
-      description: "database preparation"
+      title: "MACROPLASTIC",
+      description: "Personal project. Reflection on how humanity, in its attempt to control nature, finds itself trapped by the waste it generates."
+      link: "https://www.behance.net/gallery/214236927/MACROPLASTIC"
     },
     {
       src: "videos/project_04.mp4",
       title: "Coming Soon",
       description: "database preparation"
+      link: "https://link"
     },
     {
       src: "videos/project_05.mp4",
       title: "Coming Soon",
       description: "database preparation"
+      link: "https://link"
     },
     {
       src: "videos/project_06.mp4",
       title: "Coming Soon",
       description: "database preparation"
+      link: "https://link"
     },
     {
       src: "videos/project_07.mp4",
       title: "Coming Soon",
       description: "database preparation"
+      link: "https://link"
     },
     {
       src: "videos/project_08.mp4",
       title: "Coming Soon",
       description: "database preparation"
+      link: "https://link"
     },
     {
       src: "videos/project_09.mp4",
       title: "Coming Soon",
       description: "database preparation"
+      link: "https://link"
     }
   ];
 
@@ -230,6 +238,8 @@
       const { src, title, description } = videoSources[i];
 
       const tile = document.createElement('div');
+      tile.href = link;
+      tile.target = '_blank';
       tile.className = 'video-tile fade-in';
 
       const video = document.createElement('video');
