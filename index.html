@@ -179,54 +179,55 @@
     {
       src: "videos/project_01.mp4",
             title: "Dry Season",
-      description: "Personal project. Vellum cloth simulation"
+      description: "Personal project. Vellum cloth simulation",
+      link: "https://www.behance.net/gallery/182794307/Showreel-2023"
     },
     {
       src: "videos/project_02.mp4",
       title: "SALUKI",
-      description: "Music video. Large water FLIP simulation."
+      description: "Music video. Large water FLIP simulation.",
       link: "https://www.behance.net/gallery/181128113/Large-Water"
     },
     {
       src: "videos/project_03.mp4",
       title: "MACROPLASTIC",
-      description: "Personal project. Reflection on how humanity, in its attempt to control nature, finds itself trapped by the waste it generates."
+      description: "Personal project. Reflection on how humanity, in its attempt to control nature, finds itself trapped by the waste it generates.",
       link: "https://www.behance.net/gallery/214236927/MACROPLASTIC"
     },
     {
       src: "videos/project_04.mp4",
       title: "Coming Soon",
-      description: "database preparation"
+      description: "database preparation",
       link: "https://link"
     },
     {
       src: "videos/project_05.mp4",
       title: "Coming Soon",
-      description: "database preparation"
+      description: "database preparation",
       link: "https://link"
     },
     {
       src: "videos/project_06.mp4",
       title: "Coming Soon",
-      description: "database preparation"
+      description: "database preparation",
       link: "https://link"
     },
     {
       src: "videos/project_07.mp4",
       title: "Coming Soon",
-      description: "database preparation"
+      description: "database preparation",
       link: "https://link"
     },
     {
       src: "videos/project_08.mp4",
       title: "Coming Soon",
-      description: "database preparation"
+      description: "database preparation",
       link: "https://link"
     },
     {
       src: "videos/project_09.mp4",
       title: "Coming Soon",
-      description: "database preparation"
+      description: "database preparation",
       link: "https://link"
     }
   ];
@@ -235,10 +236,10 @@
 
   function loadVideos(startIndex, count) {
     for (let i = startIndex; i < Math.min(startIndex + count, videoSources.length); i++) {
-      const { src, title, description } = videoSources[i];
+      const { src, title, description, link } = videoSources[i];
 
-      const tile = document.createElement('div');
-      tile.href = link;
+      const tile = document.createElement('a');
+      tile.href = videoSources[i].link || `https://andreyflat.space/projects/${i + 1}`;
       tile.target = '_blank';
       tile.className = 'video-tile fade-in';
 
