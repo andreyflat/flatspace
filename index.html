@@ -6,6 +6,129 @@
   <title>Andrey Flat — Space</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <style>
+    body {
+      background: #111;
+      color: #eee;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #222;
+      padding: 2em;
+      text-align: center;
+    }
+
+    header h1 {
+      display: inline-block;
+      transition: letter-spacing 1s ease, transform 1s ease;
+    }
+
+    header h1:hover {
+      letter-spacing: 1em;
+      transform: scaleX(1.2);
+      transition: letter-spacing 5s ease, transform 5s ease;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 2em auto;
+      padding: 0 1em;
+    }
+
+    section {
+      margin-bottom: 2em;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1em;
+      background: #222;
+      color: #888;
+      font-size: 0.9em;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto 2em;
+      aspect-ratio: 16 / 9;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .video-tile {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      position: relative;
+      background: #000;
+      border-radius: 8px;
+    }
+
+    .video-tile video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .video-tile.fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .video-tile.fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.6);
+      width: 100%;
+      box-sizing: border-box;
+      color: #fff;
+      transition: opacity 0.3s ease;
+      opacity: 0;
+    }
+
+    .video-tile:hover .caption {
+      opacity: 1;
+    }
+
+    .caption h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .caption p {
+      margin: 4px 0 0;
+      font-size: 0.8rem;
+      color: #ccc;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -14,33 +137,149 @@
   </header>
 
   <main>
+    <section style="text-align: left;">
+  <p><strong>My name is Andrey Flat</strong>, and I am a computer graphics artist with over two decades of experience in visual storytelling and digital effects.</p>
+  <p><em>My journey began in 2003</em> with an interest in machinima, where I explored creative workflows using tools like <strong>Sony Vegas</strong>, <strong>Daz 3D</strong>, and <strong>3ds Max</strong>. In 2008, I transitioned into professional video editing for television, focusing primarily on <strong>Adobe After Effects</strong>.</p>
+  <p>In 2011, I joined a film studio where I expanded my expertise into <strong>color grading</strong>, <strong>compositing</strong>, and ultimately took on the role of <strong>visual effects supervisor</strong>. During this time, I worked with industry-standard tools such as <strong>Final Cut</strong>, <strong>DaVinci Resolve</strong>, <strong>Cinema 4D</strong>, <strong>Naiad</strong>, and <strong>Houdini</strong>.</p>
+  <p>In 2014, I founded my own studio, AEVA, and since 2017, I’ve been working independently as a freelance artist. Today, I specialize in <strong>procedural</strong> and <strong>generative visual effects</strong> using <strong>Houdini</strong>, <strong>Nuke</strong>, and <strong>ComfyUI</strong> — tools that allow me to push the boundaries of motion graphics and visual design.</p>
+</section>
+<section>
+  <div class="video-container">
+    <iframe
+      src="https://www.youtube.com/embed/GwuMJhSXcj0"
+      title="Showreel 2023"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+      loading="lazy">
+    </iframe>
+  </div>
+</section>
+
+
+
     <section>
-      <h2>About Me</h2>
-      <p>I create visual effects and interactive 3D experiences using Houdini</p>
+      <div class="video-grid" id="videoGrid"></div>
     </section>
 
     <section>
-        <h2>showreel</h2>
-        <div class="video-container">
-        <iframe
-        src="https://www.youtube.com/embed/GwuMJhSXcj0"
-        title="Showreel 2023"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen>
-        </iframe>
-        </div>
-    </section>
-
-
-    <section>
-      <h2>Contact</h2>
-      <p>Email: andrey.flat.post@gmail.com</p>
+      <h2>contacts</h2>
+      <p>andrey.flat.post@gmail.com</p>
     </section>
   </main>
 
   <footer>
     <p>&copy; 2025 Andrey Flat</p>
   </footer>
+
+<script>
+  const videoSources = [
+    {
+      src: "videos/project1.mp4",
+      poster: "videos/project1.jpg",
+      title: "Nebula Dance",
+      description: "Procedural particles with VEX"
+    },
+    {
+      src: "videos/project2.mp4",
+      poster: "videos/project2.jpg",
+      title: "Liquid Temple",
+      description: "FLIP simulation with refractive shading"
+    },
+    {
+      src: "videos/project2.mp4",
+      poster: "videos/project2.jpg",
+      title: "Liquid Temple",
+      description: "FLIP simulation with refractive shading"
+    },
+    {
+      src: "videos/project2.mp4",
+      poster: "videos/project2.jpg",
+      title: "Liquid Temple",
+      description: "FLIP simulation with refractive shading"
+    },
+    {
+      src: "videos/project2.mp4",
+      poster: "videos/project2.jpg",
+      title: "Liquid Temple",
+      description: "FLIP simulation with refractive shading"
+    },
+    {
+      src: "videos/project2.mp4",
+      poster: "videos/project2.jpg",
+      title: "Liquid Temple",
+      description: "FLIP simulation with refractive shading"
+    },
+    {
+      src: "videos/project3.mp4",
+      poster: "videos/project3.jpg",
+      title: "Stone Flow",
+      description: "RBD system driven by curves and noise"
+    }
+  ];
+
+  const videoGrid = document.getElementById('videoGrid');
+
+  function loadVideos(startIndex, count) {
+    for (let i = startIndex; i < Math.min(startIndex + count, videoSources.length); i++) {
+      const { src, poster, title, description } = videoSources[i];
+
+      const tile = document.createElement('div');
+      tile.className = 'video-tile fade-in';
+
+      const video = document.createElement('video');
+      video.src = src;
+      video.poster = poster;
+      video.muted = true;
+      video.loop = true;
+      video.preload = 'none';
+      video.playsInline = true;
+      video.setAttribute('loading', 'lazy');
+
+      const caption = document.createElement('div');
+      caption.className = 'caption';
+      caption.innerHTML = `<h3>${title}</h3><p>${description}</p>`;
+
+      tile.appendChild(video);
+      tile.appendChild(caption);
+      videoGrid.appendChild(tile);
+
+      observer.observe(tile);
+
+      tile.addEventListener('mouseenter', () => video.play());
+      tile.addEventListener('mouseleave', () => {
+        video.pause();
+        video.currentTime = 0;
+      });
+    }
+  }
+
+  let loadedCount = 0;
+  const BATCH_SIZE = 3;
+
+  function handleScroll() {
+    const scrollY = window.scrollY + window.innerHeight;
+    const gridBottom = videoGrid.offsetTop + videoGrid.offsetHeight;
+    if (scrollY > gridBottom - 200) {
+      loadVideos(loadedCount, BATCH_SIZE);
+      loadedCount += BATCH_SIZE;
+    }
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  window.addEventListener('scroll', handleScroll);
+  window.addEventListener('load', () => {
+    loadVideos(loadedCount, BATCH_SIZE);
+    loadedCount += BATCH_SIZE;
+  });
+</script>
+
 </body>
 </html>
