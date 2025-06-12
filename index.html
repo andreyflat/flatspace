@@ -18,7 +18,7 @@
     header {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    background-color: rgba(17, 17, 17, 0.6);
+    background-color: rgba(10, 10, 10, 0.8);
       padding: 0.5em;
     text-align: center;
     position: sticky;
@@ -28,19 +28,23 @@
 
     header h1 {
       display: inline-block;
-      transition: letter-spacing 1s ease, transform 1s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-align: center;
+      max-width: 100vw;
+      text-overflow: clip;
+      transition: letter-spacing 1s ease;
     }
 
     header h1:hover {
-      letter-spacing: 1.2em;
-      transform: scaleX(1.0);
-      transition: letter-spacing 5s ease, transform 5s ease;
+      letter-spacing: 10.0em;
+      transition: letter-spacing 5s ease;
     }
 
     main {
       max-width: 1280px;
       margin: 1em auto;
-      padding: 1 1em;
+      padding: 0 1em;
     }
 
     section {
@@ -181,9 +185,9 @@
   const videoSources = [
     {
       src: "videos/project_01.mp4",
-            title: "Dry Season",
-      description: "Personal project. Vellum cloth simulation",
-      link: "https://www.behance.net/gallery/182794307/Showreel-2023"
+            title: "EUCARIOTE",
+      description: "Personal project. What happens to the consciousness of a living organism under the influence of external factors?",
+      link: "https://www.behance.net/gallery/100474835/Eucariote"
     },
     {
       src: "videos/project_02.mp4",
@@ -199,40 +203,58 @@
     },
     {
       src: "videos/project_04.mp4",
-      title: "Coming Soon",
-      description: "database preparation",
-      link: "https://link"
+      title: "Water Drop",
+      description: "Personal project. Unit-M5 Empire-V tribute.",
+      link: "https://www.instagram.com/p/Cye_mjiSt31/"
     },
     {
       src: "videos/project_05.mp4",
-      title: "Coming Soon",
-      description: "database preparation",
-      link: "https://link"
+      title: "Experiment №80/26",
+      description: "Personal project. Iron Kettlebell in Mercury",
+      link: "https://www.behance.net/gallery/130228053/Experiment-8026"
     },
     {
       src: "videos/project_06.mp4",
-      title: "Coming Soon",
-      description: "database preparation",
-      link: "https://link"
+      title: "Waterfall",
+      description: "For led screen at the exhibition.",
+      link: "https://www.behance.net/gallery/146506521/WATERFALL"
     },
     {
       src: "videos/project_07.mp4",
-      title: "Coming Soon",
-      description: "database preparation",
-      link: "https://link"
+      title: "Dry Season",
+      description: "Personal project. Simulation and visualisation experiment.",
+      link: "https://www.instagram.com/p/Cy0Cg8OytWN/"
     },
     {
       src: "videos/project_08.mp4",
-      title: "Coming Soon",
-      description: "database preparation",
-      link: "https://link"
+      title: "HiPhi Z Rollout Show",
+      description: "AR Electric car factory launch show.",
+      link: "https://www.behance.net/gallery/148168593/HiPhi-Z-Rollout-Show"
     },
     {
       src: "videos/project_09.mp4",
-      title: "Coming Soon",
-      description: "database preparation",
-      link: "https://link"
-    }
+      title: "Infinix HOT 10 Play",
+      description: "Advertising video for phone.",
+      link: "https://www.behance.net/gallery/116302519/Infinix-Hot-X-Play"
+    },
+    {
+      src: "videos/project_10.mp4",
+      title: "2000x2036",
+      description: "Personal project. Destructive behavior is a practical or verbal manifestation of an individual's internal activity aimed at destroying something.",
+      link: "https://www.behance.net/gallery/119929513/2000x2036"
+    },
+    {
+      src: "videos/project_11.mp4",
+      title: "EX vs REX",
+      description: "Collaboration. What came first? Egg or Dinosaur?.",
+      link: "https://www.behance.net/gallery/104782579/EX-vs-REX"
+    },
+    {
+      src: "videos/project_12.mp4",
+      title: "Bloemstilleven",
+      description: "Synergistic symbiosis of confrontation between humans and artificial intelligenc.",
+      link: "https://www.behance.net/gallery/198703355/Bloemstilleven"
+    },
   ];
 
   const videoGrid = document.getElementById('videoGrid');
@@ -314,6 +336,21 @@ const videoObserver = new IntersectionObserver((entries, observer) => {
     loadVideos(loadedCount, BATCH_SIZE);
     loadedCount += BATCH_SIZE;
   });
+
+  // Adapt letter-spacing based on screen width
+  const h1 = document.querySelector("header h1");
+  h1.addEventListener("mouseenter", () => {
+    const maxSpacing = 12.0; // max 0.8em
+    const spacing = Math.min(window.innerWidth / 500, maxSpacing);
+    h1.style.letterSpacing = spacing + "em";
+    h1.style.transition = "letter-spacing 5s ease";
+  });
+
+  h1.addEventListener("mouseleave", () => {
+    h1.style.letterSpacing = "";
+    h1.style.transition = "letter-spacing 1s ease";
+  });
+
 </script>
 
 </body>
