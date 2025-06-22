@@ -1,14 +1,11 @@
-const fs = require("fs");
-const path = require("path");
+const https = require("https");
 
-const SECRET_KEY = "flat4ers"; // замените на свой
+const BOT_TOKEN = "8176012401:AAGNX5Xplfvoq_xvWMGSaMfTPGLzjXaf61o"; // ← Вставь сюда
+const CHAT_ID = "258874908";
+const SECRET_KEY = "flat_secret_123";
 
-// Файл, где будет лог
-const LOG_PATH = path.join(__dirname, "views-log.json");
-
-exports.handler = async function (event, context) {
+exports.handler = async function (event) {
   const { key } = event.queryStringParameters || {};
-
   if (key !== SECRET_KEY) {
     return {
       statusCode: 403,
@@ -16,28 +13,67 @@ exports.handler = async function (event, context) {
     };
   }
 
-  let log = [];
-  if (fs.existsSync(LOG_PATH)) {
-    try {
-      log = JSON.parse(fs.readFileSync(LOG_PATH, "utf8"));
-    } catch (err) {
-      console.error("Ошибка чтения лога:", err);
+  const timestamp = new Date().toISOString();
+  const ip = event.headers["x-forwarded-for"]?.split(",")[0] || "unknown";
+  const ua = event.headers["user-agent"] || "unknown";
+  const url = event.rawUrl || "unknown";
+
+  // Получаем геолокацию по IP
+  let location = "Unknown";
+  try {
+    const geoRes = await fetch(`https://ipapi.co/${ip}/json/`);
+    const geo = await geoRes.json();
+    if (geo && geo.city && geo.country_name) {
+      location = `${geo.country_name}, ${geo.city}`;
+    } else if (geo && geo.country_name) {
+      location = geo.country_name;
     }
+  } catch (e) {
+    location = "Lookup error";
   }
 
-  const newEntry = {
-    timestamp: new Date().toISOString(),
-    path: event.rawUrl || "unknown",
-    ip: event.headers["x-forwarded-for"] || "unknown",
-    ua: event.headers["user-agent"] || "unknown",
+  const message = `
+🔔 *New View Logged*
+📍 ${location}
+🌍 IP: \`${ip}\`
+🔗 URL: ${url}
+📱 UA: _${ua}_
+`;
+
+  const data = JSON.stringify({
+    chat_id: CHAT_ID,
+    text: message,
+    parse_mode: "Markdown",
+  });
+
+  const options = {
+    hostname: "api.telegram.org",
+    path: `/bot${BOT_TOKEN}/sendMessage`,
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Length": data.length,
+    },
   };
 
-  log.push(newEntry);
-
-  fs.writeFileSync(LOG_PATH, JSON.stringify(log, null, 2));
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ status: "logged", total: log.length }),
-  };
+  return new Promise((resolve, reject) => {
+    const req = https.request(options, (res) => {
+      res.on("data", () => {});
+      res.on("end", () => {
+        resolve({
+          statusCode: 200,
+          body: JSON.stringify({ status: "sent with geo" }),
+        });
+      });
+    });
+    req.on("error", (e) => {
+      reject({
+        statusCode: 500,
+        body: JSON.stringify({ error: e.message }),
+      });
+    });
+    req.write(data);
+    req.end();
+  });
 };
+
