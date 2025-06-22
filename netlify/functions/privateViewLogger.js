@@ -9,11 +9,10 @@ exports.handler = async function (event) {
   const ua = event.headers["user-agent"] || "";
   const referer = event.headers["referer"] || "";
 
-  // Базовая защита
   if (
     key !== SECRET_KEY ||
-    ua.includes("TelegramBot") || // защита от Telegram preview
-    !referer.includes("andreyflat.space") // защита от внешнего доступа
+    ua.includes("TelegramBot") ||
+    !referer.includes("andreyflat.space")
   ) {
     return {
       statusCode: 403,
@@ -23,9 +22,26 @@ exports.handler = async function (event) {
 
   const timestamp = new Date().toISOString();
   const ip = event.headers["x-forwarded-for"]?.split(",")[0] || "unknown";
-  const url = event.rawUrl || "unknown";
 
-  // Получаем геолокацию
+  // Определение ОС и браузера по UA
+  let os = "Unknown OS";
+  let browser = "Unknown Browser";
+
+  if (ua.includes("Win")) os = "Windows";
+  else if (ua.includes("Mac")) os = "macOS";
+  else if (ua.includes("X11") || ua.includes("Linux")) os = "Linux";
+  else if (ua.includes("Android")) os = "Android";
+  else if (ua.includes("iPhone") || ua.includes("iPad")) os = "iOS";
+
+  if (ua.includes("Firefox/")) browser = "Firefox";
+  else if (ua.includes("Edg/")) browser = "Edge";
+  else if (ua.includes("Chrome/") && !ua.includes("Chromium")) browser = "Chrome";
+  else if (ua.includes("Safari/") && !ua.includes("Chrome/")) browser = "Safari";
+  else if (ua.includes("Chromium/")) browser = "Chromium";
+
+  const shortUA = `${os} / ${browser}`;
+
+  // Геолокация
   let location = "Unknown";
   try {
     const geoRes = await fetch(`https://ipapi.co/${ip}/json/`);
@@ -43,8 +59,7 @@ exports.handler = async function (event) {
 🔔 *New View Logged*
 📍 ${location}
 🌍 IP: \`${ip}\`
-🔗 URL: ${url}
-📱 UA: _${ua}_
+📱 ${shortUA}
 `;
 
   const data = JSON.stringify({
@@ -69,7 +84,7 @@ exports.handler = async function (event) {
       res.on("end", () => {
         resolve({
           statusCode: 200,
-          body: JSON.stringify({ status: "sent with geo" }),
+          body: JSON.stringify({ status: "sent with geo & short UA" }),
         });
       });
     });
