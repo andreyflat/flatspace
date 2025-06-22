@@ -1,12 +1,20 @@
 const https = require("https");
 
-const BOT_TOKEN = "8176012401:AAGNX5Xplfvoq_xvWMGSaMfTPGLzjXaf61o"; // ← Вставь сюда
+const BOT_TOKEN = "8176012401:AAGNX5Xplfvoq_xvWMGSaMfTPGLzjXaf61o";
 const CHAT_ID = "258874908";
 const SECRET_KEY = "flat_secret_123";
 
 exports.handler = async function (event) {
   const { key } = event.queryStringParameters || {};
-  if (key !== SECRET_KEY) {
+  const ua = event.headers["user-agent"] || "";
+  const referer = event.headers["referer"] || "";
+
+  // Базовая защита
+  if (
+    key !== SECRET_KEY ||
+    ua.includes("TelegramBot") || // защита от Telegram preview
+    !referer.includes("andreyflat.space") // защита от внешнего доступа
+  ) {
     return {
       statusCode: 403,
       body: JSON.stringify({ error: "Forbidden" }),
@@ -15,10 +23,9 @@ exports.handler = async function (event) {
 
   const timestamp = new Date().toISOString();
   const ip = event.headers["x-forwarded-for"]?.split(",")[0] || "unknown";
-  const ua = event.headers["user-agent"] || "unknown";
   const url = event.rawUrl || "unknown";
 
-  // Получаем геолокацию по IP
+  // Получаем геолокацию
   let location = "Unknown";
   try {
     const geoRes = await fetch(`https://ipapi.co/${ip}/json/`);
@@ -76,4 +83,3 @@ exports.handler = async function (event) {
     req.end();
   });
 };
-
