@@ -1,5 +1,10 @@
 const https = require("https");
 
+// Обеспечим fetch в Node.js
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
+
+// Безопасно получаем переменные окружения
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const CHAT_ID = process.env.CHAT_ID;
 const SECRET_KEY = process.env.SECRET_KEY;
@@ -9,6 +14,7 @@ exports.handler = async function (event) {
   const ua = event.headers["user-agent"] || "";
   const referer = event.headers["referer"] || "";
 
+  // Базовая защита от внешнего вызова и ботов
   if (
     key !== SECRET_KEY ||
     ua.includes("TelegramBot") ||
@@ -23,7 +29,7 @@ exports.handler = async function (event) {
   const timestamp = new Date().toISOString();
   const ip = event.headers["x-forwarded-for"]?.split(",")[0] || "unknown";
 
-  // Определение ОС и браузера по UA
+  // Краткий User-Agent: определим OS и браузер
   let os = "Unknown OS";
   let browser = "Unknown Browser";
 
@@ -41,26 +47,30 @@ exports.handler = async function (event) {
 
   const shortUA = `${os} / ${browser}`;
 
-  // Геолокация
+  // Определение локации по IP
   let location = "Unknown";
   try {
     const geoRes = await fetch(`https://ipapi.co/${ip}/json/`);
-    const geo = await geoRes.json();
-    if (geo && geo.city && geo.country_name) {
-      location = `${geo.country_name}, ${geo.city}`;
-    } else if (geo && geo.country_name) {
-      location = geo.country_name;
+    if (geoRes.ok) {
+      const geo = await geoRes.json();
+      if (geo.city && geo.country_name) {
+        location = `${geo.country_name}, ${geo.city}`;
+      } else if (geo.country_name) {
+        location = geo.country_name;
+      }
+    } else {
+      location = `Geo lookup failed (${geoRes.status})`;
     }
   } catch (e) {
     location = "Lookup error";
   }
 
-  const message = `
-🔔 *New View Logged*
+  // Текст уведомления
+  const message =
+`🔔 *New View Logged*
 📍 ${location}
 🌍 IP: \`${ip}\`
-📱 ${shortUA}
-`;
+📱 ${shortUA}`;
 
   const data = JSON.stringify({
     chat_id: CHAT_ID,
@@ -78,13 +88,14 @@ exports.handler = async function (event) {
     },
   };
 
+  // Отправляем сообщение в Telegram
   return new Promise((resolve, reject) => {
     const req = https.request(options, (res) => {
       res.on("data", () => {});
       res.on("end", () => {
         resolve({
           statusCode: 200,
-          body: JSON.stringify({ status: "sent with geo & short UA" }),
+          body: JSON.stringify({ status: "sent securely" }),
         });
       });
     });
