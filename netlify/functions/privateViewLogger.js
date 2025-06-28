@@ -1,8 +1,8 @@
 const https = require("https");
 
-const BOT_TOKEN = "8176012401:AAGNX5Xplfvoq_xvWMGSaMfTPGLzjXaf61o";
-const CHAT_ID = "258874908";
-const SECRET_KEY = "flat_secret_123";
+const BOT_TOKEN = process.env.BOT_TOKEN;
+const CHAT_ID = process.env.CHAT_ID;
+const SECRET_KEY = process.env.SECRET_KEY;
 
 exports.handler = async function (event) {
   const { key } = event.queryStringParameters || {};
