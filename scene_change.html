@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scene Change — 3D Models</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #000;
+      color: #eee;
+      font-family: 'Space Grotesk', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      background-color: rgba(10, 10, 10, 0.8);
+      padding: 0.5em;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    header h1 {
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-align: center;
+      max-width: 100vw;
+      text-overflow: clip;
+      transition: letter-spacing 1s ease;
+    }
+    header h1:hover {
+      letter-spacing: 10.0em;
+      transition: letter-spacing 5s ease;
+    }
+    main {
+      max-width: 1280px;
+      margin: 1em auto;
+      padding: 0 1em;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 20px 0;
+    }
+    .item model-viewer {
+      width: 100%;
+      height: 200px;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #111;
+    }
+    .item p {
+      margin: 0.5em 0 0;
+      font-size: 0.9em;
+      color: #ccc;
+      text-align: center;
+    }
+    .model-viewer-container {
+      max-width: 1000px;
+      margin: 40px auto;
+      display: none;
+    }
+    model-viewer#viewer {
+      width: 100%;
+      height: 600px;
+      background: #000;
+    }
+    .back {
+      margin: 1em auto 0;
+      display: block;
+      background: #444;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>flat space</h1>
+    <p>a small space in a huge universe</p>
+  </header>
+
+  <main>
+    <section>
+      <h2 style="text-align: center;">Scene Change – 3D Models</h2>
+      <p style="text-align: center; max-width: 800px; margin: 0 auto 2em;">
+        “Scene Change” was originally presented in the Russian Pavilion at the 57th Venice
+        Biennale in 2017 as part of the <em>Theatrum Orbis</em> exhibition curated by Semyon
+        Mikhailovsky. Grisha Bruskin’s installation featured theatrical arrangements of
+        gypsum figures, mechanized hybrids such as two-headed birds, soldiers with
+        binoculars, drones, and more — staged as a sequence of “scenes” exploring themes
+        of power, surveillance, fear, and the transformation of myth in contemporary society.
+      </p>
+
+      <div class="gallery">
+        <div class="item" onclick="openModel('bird_01')">
+          <model-viewer src="models/bird_01.glb" camera-controls disable-zoom></model-viewer>
+          <p>Bird 01 – Symbolic Avian Form</p>
+        </div>
+        <div class="item" onclick="openModel('bowman')">
+          <model-viewer src="models/bowman.glb" camera-controls disable-zoom></model-viewer>
+          <p>Bowman – Archer Character Concept</p>
+        </div>
+        <div class="item" onclick="openModel('fish_01')">
+          <model-viewer src="models/fish_01.glb" camera-controls disable-zoom></model-viewer>
+          <p>Fish 01 – Abstract Aquatic Creature</p>
+        </div>
+      </div>
+
+      <div class="model-viewer-container" id="viewerSection">
+        <model-viewer id="viewer"
+          src=""
+          alt="3D model"
+          auto-rotate
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="1"
+          exposure="1"
+          environment-image="neutral">
+        </model-viewer>
+        <button class="back" onclick="closeModel()">&larr; Back to gallery</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Andrey Flat</p>
+  </footer>
+
+  <script>
+    function openModel(name) {
+      document.querySelector('.gallery').style.display = 'none';
+      document.querySelector('#viewerSection').style.display = 'block';
+      document.querySelector('#viewer').src = `models/${name}.glb`;
+    }
+    function closeModel() {
+      document.querySelector('#viewerSection').style.display = 'none';
+      document.querySelector('.gallery').style.display = 'grid';
+    }
+  </script>
+<script>
+  const h1 = document.querySelector("header h1");
+  h1.addEventListener("mouseenter", () => {
+    const maxSpacing = 12.0;
+    const spacing = Math.min(window.innerWidth / 500, maxSpacing);
+    h1.style.letterSpacing = spacing + "em";
+    h1.style.transition = "letter-spacing 5s ease";
+  });
+  h1.addEventListener("mouseleave", () => {
+    h1.style.letterSpacing = "";
+    h1.style.transition = "letter-spacing 1s ease";
+  });
+</script>
+</body>
+</html>
