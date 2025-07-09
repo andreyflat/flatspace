@@ -50,12 +50,13 @@
       gap: 20px;
       padding: 20px 0;
     }
-    .item model-viewer {
+    .item img {
       width: 100%;
-      height: 200px;
+      height: auto;
       border-radius: 8px;
       cursor: pointer;
       background: #111;
+      display: block;
     }
     .item p {
       margin: 0.5em 0 0;
@@ -104,16 +105,16 @@
       </p>
 
       <div class="gallery">
-        <div class="item" onclick="openModel('bird_01')">
-          <model-viewer src="models/bird_01.glb" camera-controls disable-zoom></model-viewer>
+        <div class="item" onclick="openModel('bird')">
+          <img src="models/previews/bird.jpg" alt="Bird">
           <p>Bird 01 – Symbolic Avian Form</p>
         </div>
         <div class="item" onclick="openModel('bowman')">
-          <model-viewer src="models/bowman.glb" camera-controls disable-zoom></model-viewer>
+          <img src="models/previews/bowman.jpg" alt="Bowman">
           <p>Bowman – Archer Character Concept</p>
         </div>
-        <div class="item" onclick="openModel('fish_01')">
-          <model-viewer src="models/fish_01.glb" camera-controls disable-zoom></model-viewer>
+        <div class="item" onclick="openModel('fish')">
+          <img src="models/previews/fish.jpg" alt="Fish">
           <p>Fish 01 – Abstract Aquatic Creature</p>
         </div>
       </div>
@@ -130,7 +131,7 @@
           exposure="1"
           environment-image="neutral">
         </model-viewer>
-        <button class="back" onclick="closeModel()">&larr; Back to gallery</button>
+        <button class="back" onclick="closeModel()">&larr; backy</button>
       </div>
     </section>
   </main>
@@ -150,18 +151,18 @@
       document.querySelector('.gallery').style.display = 'grid';
     }
   </script>
-<script>
-  const h1 = document.querySelector("header h1");
-  h1.addEventListener("mouseenter", () => {
-    const maxSpacing = 12.0;
-    const spacing = Math.min(window.innerWidth / 500, maxSpacing);
-    h1.style.letterSpacing = spacing + "em";
-    h1.style.transition = "letter-spacing 5s ease";
-  });
-  h1.addEventListener("mouseleave", () => {
-    h1.style.letterSpacing = "";
-    h1.style.transition = "letter-spacing 1s ease";
-  });
-</script>
+  <script>
+    const h1 = document.querySelector("header h1");
+    h1.addEventListener("mouseenter", () => {
+      const maxSpacing = 12.0;
+      const spacing = Math.min(window.innerWidth / 500, maxSpacing);
+      h1.style.letterSpacing = spacing + "em";
+      h1.style.transition = "letter-spacing 5s ease";
+    });
+    h1.addEventListener("mouseleave", () => {
+      h1.style.letterSpacing = "";
+      h1.style.transition = "letter-spacing 1s ease";
+    });
+  </script>
 </body>
 </html>
