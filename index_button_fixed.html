@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Andrey Flat — Space</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <style>
+    body {
+      background: #000;
+      color: #eee;
+      font-family: 'Space Grotesk', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background-color: rgba(10, 10, 10, 0.8);
+      padding: 0.5em;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    }
+
+    header h1 {
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-align: center;
+      max-width: 100vw;
+      text-overflow: clip;
+      transition: letter-spacing 1s ease;
+    }
+
+    header h1:hover {
+      letter-spacing: 10.0em;
+      transition: letter-spacing 5s ease;
+    }
+
+    main {
+      max-width: 1280px;
+      margin: 1em auto;
+      padding: 0 1em;
+    }
+
+    section {
+      margin-bottom: 1em;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1em;
+      background: #222;
+      color: #888;
+      font-size: 0.9em;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto 2em;
+      aspect-ratio: 16 / 9;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0px;
+    }
+
+    .video-tile {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      position: relative;
+      background: #000;
+      border-radius: 0;
+    }
+
+    .video-tile video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .video-tile.fade-in {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .video-tile.fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.6);
+      width: 100%;
+      box-sizing: border-box;
+      color: #fff;
+      transition: opacity 0.3s ease;
+      opacity: 0;
+    }
+
+    .video-tile:hover .caption {
+      opacity: 1;
+    }
+
+    .caption h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .caption p {
+      margin: 4px 0 0;
+      font-size: 0.8rem;
+      color: #ccc;
+    }
+
+    #scrollToTopBtn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 9999;
+  background-color: #fff;
+  color: #000;
+  font-size: 1.5em;
+  padding: 0.4em 0.8em;
+  border: none;
+  border-radius: 0.5em;
+  cursor: pointer;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: opacity 0.3s ease;
+}
+
+   
+
+</style>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>flat space</h1>
+    <p>a small space in a huge universe</p>
+  </header>
+
+  <main>
+    <section style="text-align: justify; max-width: 800px; margin: 0 auto;">
+  <p>Welcome to the personal space of CG artist <strong>Andrey Flat</strong>. This is a curated selection of works spanning the past 20 years.</p>
+  <p>Andrey began his creative journey in <strong>2003</strong> by experimenting with game footage, using tools like <strong>Sony Vegas, Daz 3D, and 3ds Max</strong>. By 2008, he was working in television as a video editor, focusing on <strong>After Effects</strong>.</p>
+  <p>In <strong>2011</strong>, he joined a film studio, advancing to VFX supervisor while mastering tools like <strong>Final Cut, DaVinci Resolve, Cinema 4D, Naiad, and Houdini</strong>.</p>
+  <p>Since <strong>2014</strong>, he has worked independently, specializing in procedural and generative effects with <strong>Houdini, Nuke, Touchdesigner and ComfyUI</strong>.</p>
+</section>
+<section>
+  <div class="video-container">
+    <iframe
+      src="https://www.youtube.com/embed/GwuMJhSXcj0"
+      title="Showreel 2023"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+      loading="lazy">
+    </iframe>
+  </div>
+</section>
+
+
+
+    <section>
+      <div class="video-grid" id="videoGrid"></div>
+    </section>
+
+    <section style="text-align: center;">
+      <p><a href="mailto:andrey.flat.post@gmail.com">make contact</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Andrey Flat</p>
+  </footer>
+
+<script>
+  const videoSources = [
+    {
+      src: "videos/project_01.mp4",
+            title: "EUCARIOTE (2021)",
+      description: "Personal project. What happens to the consciousness of a living organism under the influence of external factors?",
+      link: "https://www.behance.net/gallery/100474835/Eucariote"
+    },
+    {
+      src: "videos/project_02.mp4",
+      title: "SALUKI (2023)",
+      description: "Music video. Large water FLIP simulation.",
+      link: "https://www.behance.net/gallery/181128113/Large-Water"
+    },
+    {
+      src: "videos/project_03.mp4",
+      title: "MACROPLASTIC (2024)",
+      description: "Personal project. Reflection on how humanity, in its attempt to control nature, finds itself trapped by the waste it generates.",
+      link: "https://www.behance.net/gallery/214236927/MACROPLASTIC"
+    },
+    {
+      src: "videos/project_04.mp4",
+      title: "Water Drop (2020)",
+      description: "Personal project. Unit-M5 Empire-V tribute.",
+      link: "https://www.instagram.com/p/Cye_mjiSt31/"
+    },
+    {
+      src: "videos/project_05.mp4",
+      title: "Experiment №80/26 (2021)",
+      description: "Personal project. Iron Kettlebell in Mercury",
+      link: "https://www.behance.net/gallery/130228053/Experiment-8026"
+    },
+    {
+      src: "videos/project_06.mp4",
+      title: "Waterfall (2022)",
+      description: "Exhibition. Led screen",
+      link: "https://www.behance.net/gallery/146506521/WATERFALL"
+    },
+    {
+      src: "videos/project_07.mp4",
+      title: "Dry Season (2023)",
+      description: "Personal project. Simulation and visualisation experiment.",
+      link: "https://www.instagram.com/p/Cy0Cg8OytWN/"
+    },
+    {
+      src: "videos/project_08.mp4",
+      title: "HiPhi Z Rollout Show (2022)",
+      description: "AR Electric car factory launch show.",
+      link: "https://www.behance.net/gallery/148168593/HiPhi-Z-Rollout-Show"
+    },
+    {
+      src: "videos/project_09.mp4",
+      title: "Infinix HOT 10 Play (2021)",
+      description: "Advertising video for phone.",
+      link: "https://www.behance.net/gallery/116302519/Infinix-Hot-X-Play"
+    },
+    {
+      src: "videos/project_10.mp4",
+      title: "2000x2036 (2021)",
+      description: "Personal project. Destructive behavior is a practical or verbal manifestation of an individual's internal activity aimed at destroying something.",
+      link: "https://www.behance.net/gallery/119929513/2000x2036"
+    },
+    {
+      src: "videos/project_11.mp4",
+      title: "EX vs REX (2020)",
+      description: "Collaboration. What came first? Egg or Dinosaur?.",
+      link: "https://www.behance.net/gallery/104782579/EX-vs-REX"
+    },
+    {
+      src: "videos/project_12.mp4",
+      title: "Bloemstilleven (2021)",
+      description: "Collaboration. Synergistic symbiosis of confrontation between humans and artificial intelligenc.",
+      link: "https://www.behance.net/gallery/198703355/Bloemstilleven"
+    },
+    {
+      src: "videos/project_13.mp4",
+      title: "BLOCKS (2023)",
+      description: "Proceduralism Religion",
+      link: "https:empty"
+    },
+    {
+      src: "videos/project_14.mp4",
+      title: "Magic Animals (2024)",
+      description: "Exposition. Festival of light. Holographic screens.",
+      link: "https://www.behance.net/gallery/208881221/Magic-Animals"
+    },
+    {
+      src: "videos/project_15.mp4",
+      title: "ELEMENTS (2024)",
+      description: "LED screens surround the room. Water. Symbolizes emotions, intuition, and the flow of life.",
+      link: "https://www.behance.net/gallery/209820423/ELEMENTS"
+    }
+  ];
+
+  const videoGrid = document.getElementById('videoGrid');
+
+  function loadVideos(startIndex, count) {
+    for (let i = startIndex; i < Math.min(startIndex + count, videoSources.length); i++) {
+      const { src, title, description, link } = videoSources[i];
+
+      const tile = document.createElement('a');
+      tile.href = videoSources[i].link || `https://andreyflat.space/projects/${i + 1}`;
+      tile.target = '_blank';
+      tile.className = 'video-tile fade-in';
+
+      const video = document.createElement('video');
+      video.poster = `${src.replace(/\.mp4$/, '.jpg')}`;
+      video.muted = true;
+      video.loop = true;
+      video.preload = 'auto';
+      video.playsInline = true;
+      video.dataset.src = src;
+
+      const caption = document.createElement('div');
+      caption.className = 'caption';
+      caption.innerHTML = `<h3>${title}</h3><p>${description}</p>`;
+
+      tile.appendChild(video);
+      tile.appendChild(caption);
+      videoGrid.appendChild(tile);
+
+      fadeObserver.observe(tile);
+      videoObserver.observe(video);
+
+      tile.addEventListener('mouseenter', () => {
+        if (!video.src) {
+          video.src = video.dataset.src;
+          video.preload = 'auto';
+        }
+        video.play().catch(() => {});
+      });
+
+tile.addEventListener('mouseleave', () => {
+  video.pause();
+});
+
+    }
+  }
+
+  let loadedCount = 0;
+  const BATCH_SIZE = 3;
+
+  function handleScroll() {
+    const scrollY = window.scrollY + window.innerHeight;
+    const gridBottom = videoGrid.offsetTop + videoGrid.offsetHeight;
+    if (scrollY > gridBottom - 200) {
+      loadVideos(loadedCount, BATCH_SIZE);
+      loadedCount += BATCH_SIZE;
+    }
+  }
+
+  const fadeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+const videoObserver = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const video = entry.target;
+      if (!video.src) {
+        video.src = video.dataset.src;
+        video.preload = 'auto';
+      }
+      observer.unobserve(video);
+    }
+  });
+}, { rootMargin: '800px 0px' });
+
+  window.addEventListener('scroll', handleScroll);
+  window.addEventListener('load', () => {
+    loadVideos(loadedCount, BATCH_SIZE);
+    loadedCount += BATCH_SIZE;
+  });
+
+  // Adapt letter-spacing based on screen width
+  const h1 = document.querySelector("header h1");
+  h1.addEventListener("mouseenter", () => {
+    const maxSpacing = 12.0; // max 0.8em
+    const spacing = Math.min(window.innerWidth / 500, maxSpacing);
+    h1.style.letterSpacing = spacing + "em";
+    h1.style.transition = "letter-spacing 5s ease";
+  });
+
+  h1.addEventListener("mouseleave", () => {
+    h1.style.letterSpacing = "";
+    h1.style.transition = "letter-spacing 1s ease";
+  });
+window.addEventListener("scroll", () => {
+    const maxSpacing = 1.2;
+    const maxScroll = 600;
+    const scrollY = window.scrollY;
+    const spacing = Math.min(scrollY / maxScroll * maxSpacing, maxSpacing);
+    if (!h1.matches(':hover')) {
+      h1.style.letterSpacing = spacing + "em";
+    }
+  });
+
+
+  window.addEventListener("scroll", () => {
+    const baseMaxSpacing = 0.0012; // коэффициент
+    const maxScroll = 300;
+    const scrollY = window.scrollY;
+    const dynamicMaxSpacing = window.innerWidth * baseMaxSpacing;
+    const spacing = Math.min(scrollY / maxScroll * dynamicMaxSpacing, dynamicMaxSpacing);
+    if (!h1.matches(':hover')) {
+      h1.style.letterSpacing = spacing + "em";
+    }
+  });
+
+
+  document.getElementById("scrollToTopBtn").addEventListener("click", () => { window.scrollTo({ top: 0, behavior: "smooth" }); });
+  });
+
+</script>
+
+<script>
+  fetch("/.netlify/functions/privateViewLogger?key=flat_secret_123");
+</script>
+
+
+  <button id="scrollToTopBtn" title="Back to top">&#8679;</button>
+
+</body>
+</html>
