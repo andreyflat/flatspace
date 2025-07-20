@@ -143,17 +143,17 @@
     bottom: 15px;
     right: 15px;
     z-index: 9999;
-    background-color: #010;
-    color: #000;
-    font-size: 1.25em;
+    background-color: #111;
+    color: #555;
+    font-size: 1.4em;
     padding: 0.4em 0.8em;
     border: none;
-    border-radius: 0.5em;
+    border-radius: 0em;
     cursor: pointer;
     opacity: 1 !important;
     pointer-events: auto !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    transition: opacity 0.3s ease;
+    box-shadow: 0 0px 0px rgba(0,0,0,0);
+    transition: opacity 0.5s ease;
 }
 
 
@@ -292,53 +292,69 @@
       title: "ELEMENTS (2024)",
       description: "LED screens surround the room. Water. Symbolizes emotions, intuition, and the flow of life.",
       link: "https://www.behance.net/gallery/209820423/ELEMENTS"
-    }
+    },
+    {
+      src: "videos/project_16.mp4",
+      title: "MURAQQA - Experiment (2023)",
+      description: "TBA",
+      link: "https://youtu.be/oEwYm7WJNL0"
+    },
+    {
+      src: "videos/project_17.mp4",
+      title: "MURAQQA - Genesis (2023)",
+      description: "TBA",
+      link: "https://youtu.be/ZyfbAwPa-5Q"
+    },
+    {
+      src: "videos/project_18.mp4",
+      title: "Scene Change - Prologue (2018)",
+      description: "Grisha Bruskin's project Scene Change was first presented at the Venice Biennale 2017 in which I participated as a Motion Designer.",
+      link: "https://www.behance.net/gallery/202101993/Scene-change-Prologue"
+    },
   ];
+videoSources.sort(() => Math.random() - 0.5);
+function loadVideos(startIndex, count) {
+  for (let i = startIndex; i < Math.min(startIndex + count, videoSources.length); i++) {
+    const { src, title, description, link } = videoSources[i];
 
-  const videoGrid = document.getElementById('videoGrid');
+    const tile = document.createElement('a');
+    tile.href = link || `https://andreyflat.space/projects/${i + 1}`;
+    tile.target = '_blank';
+    tile.className = 'video-tile fade-in';
 
-  function loadVideos(startIndex, count) {
-    for (let i = startIndex; i < Math.min(startIndex + count, videoSources.length); i++) {
-      const { src, title, description, link } = videoSources[i];
+    const video = document.createElement('video');
+    video.poster = `${src.replace(/\.mp4$/, '.jpg')}`;
+    video.muted = true;
+    video.loop = true;
+    video.preload = 'auto';
+    video.playsInline = true;
+    video.dataset.src = src;
 
-      const tile = document.createElement('a');
-      tile.href = videoSources[i].link || `https://andreyflat.space/projects/${i + 1}`;
-      tile.target = '_blank';
-      tile.className = 'video-tile fade-in';
+    const caption = document.createElement('div');
+    caption.className = 'caption';
+    caption.innerHTML = `<h3>${title}</h3><p>${description}</p>`;
 
-      const video = document.createElement('video');
-      video.poster = `${src.replace(/\.mp4$/, '.jpg')}`;
-      video.muted = true;
-      video.loop = true;
-      video.preload = 'auto';
-      video.playsInline = true;
-      video.dataset.src = src;
+    tile.appendChild(video);
+    tile.appendChild(caption);
+    videoGrid.appendChild(tile);
 
-      const caption = document.createElement('div');
-      caption.className = 'caption';
-      caption.innerHTML = `<h3>${title}</h3><p>${description}</p>`;
+    fadeObserver.observe(tile);
+    videoObserver.observe(video);
 
-      tile.appendChild(video);
-      tile.appendChild(caption);
-      videoGrid.appendChild(tile);
+    tile.addEventListener('mouseenter', () => {
+      if (!video.src) {
+        video.src = video.dataset.src;
+        video.preload = 'auto';
+      }
+      video.play().catch(() => {});
+    });
 
-      fadeObserver.observe(tile);
-      videoObserver.observe(video);
-
-      tile.addEventListener('mouseenter', () => {
-        if (!video.src) {
-          video.src = video.dataset.src;
-          video.preload = 'auto';
-        }
-        video.play().catch(() => {});
-      });
-
-tile.addEventListener('mouseleave', () => {
-  video.pause();
-});
-
-    }
+    tile.addEventListener('mouseleave', () => {
+      video.pause();
+    });
   }
+}
+
 
   let loadedCount = 0;
   const BATCH_SIZE = 3;
@@ -424,7 +440,7 @@ const videoObserver = new IntersectionObserver((entries, observer) => {
 </script>
 
 
-<button id="scrollToTopBtn" title="Back to top">&#8679;</button>
+<button id="scrollToTopBtn" title="Rewind">&#8679;</button>
 
 <script>
   window.addEventListener("DOMContentLoaded", () => {
