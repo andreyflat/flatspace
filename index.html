@@ -80,7 +80,7 @@
     .video-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      gap: 0px;
     }
 
     .video-tile {
@@ -101,7 +101,7 @@
 
     .video-tile.fade-in {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(50px);
       transition: opacity 0.8s ease, transform 0.8s ease;
     }
 
@@ -137,7 +137,30 @@
       font-size: 0.8rem;
       color: #ccc;
     }
-  </style>
+
+    #scrollToTopBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 999;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid #888;
+      color: #eee;
+      font-size: 1.5em;
+      padding: 0.2em 0.6em;
+      border-radius: 0.4em;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #scrollToTopBtn.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+</style>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -290,7 +313,7 @@
       video.poster = `${src.replace(/\.mp4$/, '.jpg')}`;
       video.muted = true;
       video.loop = true;
-      video.preload = 'none';
+      video.preload = 'auto';
       video.playsInline = true;
       video.dataset.src = src;
 
@@ -306,14 +329,17 @@
       videoObserver.observe(video);
 
       tile.addEventListener('mouseenter', () => {
-        if (!video.src) video.src = video.dataset.src;
-        video.play();
+        if (!video.src) {
+          video.src = video.dataset.src;
+          video.preload = 'auto';
+        }
+        video.play().catch(() => {});
       });
-      tile.addEventListener('mouseleave', () => {
-        video.pause();
-        video.removeAttribute('src');
-        video.load();
-      });
+
+tile.addEventListener('mouseleave', () => {
+  video.pause();
+});
+
     }
   }
 
@@ -343,11 +369,12 @@ const videoObserver = new IntersectionObserver((entries, observer) => {
       const video = entry.target;
       if (!video.src) {
         video.src = video.dataset.src;
+        video.preload = 'auto';
       }
       observer.unobserve(video);
     }
   });
-}, { rootMargin: '200px 0px' });
+}, { rootMargin: '800px 0px' });
 
   window.addEventListener('scroll', handleScroll);
   window.addEventListener('load', () => {
@@ -368,12 +395,49 @@ const videoObserver = new IntersectionObserver((entries, observer) => {
     h1.style.letterSpacing = "";
     h1.style.transition = "letter-spacing 1s ease";
   });
+window.addEventListener("scroll", () => {
+    const maxSpacing = 1.2;
+    const maxScroll = 600;
+    const scrollY = window.scrollY;
+    const spacing = Math.min(scrollY / maxScroll * maxSpacing, maxSpacing);
+    if (!h1.matches(':hover')) {
+      h1.style.letterSpacing = spacing + "em";
+    }
+  });
+
+
+  window.addEventListener("scroll", () => {
+    const baseMaxSpacing = 0.0012; // коэффициент
+    const maxScroll = 3000;
+    const scrollY = window.scrollY;
+    const dynamicMaxSpacing = window.innerWidth * baseMaxSpacing;
+    const spacing = Math.min(scrollY / maxScroll * dynamicMaxSpacing, dynamicMaxSpacing);
+    if (!h1.matches(':hover')) {
+      h1.style.letterSpacing = spacing + "em";
+    }
+  });
+
+
+  const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+      scrollToTopBtn.classList.add("show");
+    } else {
+      scrollToTopBtn.classList.remove("show");
+    }
+  });
+  scrollToTopBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 
 </script>
 
 <script>
   fetch("/.netlify/functions/privateViewLogger?key=flat_secret_123");
 </script>
+
+
+  <button id="scrollToTopBtn" title="Back to top">&#8679;</button>
 
 </body>
 </html>
