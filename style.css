@@ -8,18 +8,18 @@ body {
 
 header {
   background: #222;
-  padding: 2em;
+  padding: 2em 1em 1em;
   text-align: center;
 }
 
 main {
   max-width: 1280px;
-  margin: 2em auto;
+  margin: 0 auto;
   padding: 0 1em;
 }
 
 section {
-  margin-bottom: 2em;
+  margin-bottom: 0em;
 }
 
 footer {
@@ -34,7 +34,7 @@ footer {
   position: relative;
   width: 100%;
   max-width: 1280px;
-  margin: 0 auto 2em;
+  margin: 0 auto;
   aspect-ratio: 16 / 9; /* это заменяет padding-bottom */
 }
 
