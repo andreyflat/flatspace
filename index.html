@@ -442,8 +442,21 @@ const videoObserver = new IntersectionObserver((entries, observer) => {
 </script>
 
 <script>
-  fetch("/.netlify/functions/privateViewLogger?key=flat_secret_123");
+(function () {
+  const secret = "flat_secret_123"; // тот же, что в Netlify → SECRET_KEY
+  const url = "/.netlify/functions/privateViewLogger?key=" + encodeURIComponent(secret) + "&t=" + Date.now();
+
+  fetch(url, {
+    method: "POST",
+    keepalive: true,
+    headers: { "content-type": "application/json", "cache-control": "no-store" },
+    body: JSON.stringify({ path: location.pathname })
+  })
+  .then(r => r.text().then(t => console.log("logger:", r.status, t)))
+  .catch(e => console.log("logger error:", e));
+})();
 </script>
+
 
 
 <button id="scrollToTopBtn" title="Rewind">&#8679;</button>
