@@ -2,10 +2,9 @@
 // Требуется package.json с {"type":"module"}
 
 import https from "https";
-import CryptoJS from "crypto-js";
 import { createClient } from "@supabase/supabase-js";
 
-// node-fetch (ленивая подгрузка для совместимости с бандлером)
+// node-fetch (ленивая подгрузка)
 const fetch = (...args) => import("node-fetch").then(({ default: f }) => f(...args));
 
 // --- ENV ---
@@ -34,7 +33,7 @@ function isPrivateIp(ip) {
   if (/^\d{1,3}(\.\d{1,3}){3}$/.test(cleaned)) {
     const [a,b] = cleaned.split(".").map(Number);
     if (a === 10 || a === 127) return true;
-    if (a === 100 && b >= 64 && b <= 127) return true; // 100.64.0.0/10
+    if (a === 100 && b >= 64 && b <= 127) return true;
     if (a === 192 && b === 168) return true;
     if (a === 172 && b >= 16 && b <= 31) return true;
     return false;
@@ -86,17 +85,9 @@ async function sendTelegram(text) {
 
 // ---------- handler ----------
 export async function handler(event) {
-  // --- доступ: ключ ИЛИ тот же домен; блокируем TelegramBot UA ---
+  // доступ: ключ ИЛИ тот же домен; блочим TelegramBot UA
   const qs = event.queryStringParameters || {};
   const { key } = qs;
-
-  let path = qs.path || "";
-  try {
-    if (!path && event.body) {
-      const body = JSON.parse(event.body);
-      if (body && typeof body.path === "string") path = body.path;
-    }
-  } catch {}
 
   const headers = event.headers || {};
   const ua      = headers["user-agent"] || "";
@@ -113,11 +104,11 @@ export async function handler(event) {
     };
   }
 
-  // --- IP и гео ---
-  const ipRaw = extractIp(headers) || "unknown";
+  // --- извлекаем данные для статистики ---
+  const ipRaw = extractIp(headers) || "unknown";            // используем ТОЛЬКО для гео, НЕ пишем в БД
   const { os, browser } = parseUA(ua);
 
-  // Пытаемся взять гео из заголовков Netlify
+  // 1) сначала пробуем заголовки Netlify
   let country = headers["x-country"] || null; // ISO-2, например "ID"
   let city = null;
   try {
@@ -128,7 +119,7 @@ export async function handler(event) {
     }
   } catch {}
 
-  // Если города нет и IP публичный — мягко попробуем ipapi.co (таймаут 3с)
+  // 2) если города нет и IP публичный — мягко добираем через ipapi.co (таймаут 3с)
   if (!city && ipRaw !== "unknown" && !isPrivateIp(ipRaw)) {
     try {
       const ctrl = new AbortController();
@@ -141,18 +132,13 @@ export async function handler(event) {
         country = j.country_name || j.country || country;
       }
     } catch {
-      // игнорируем
+      // игнор
     }
   }
 
-  // --- хэш IP (а не хранение IP) ---
-  const ip_hash = CryptoJS.SHA256(`${ipRaw}|${SECRET_KEY}`).toString();
-
-  // --- запись в Supabase ---
+  // --- запись в БД (без IP и без path) ---
   const insertPayload = {
-    path,
     referrer: headers["referer"] || null,
-    ip_hash,
     country: country || null,
     city: city || null,
     ua_os: os,
@@ -161,13 +147,11 @@ export async function handler(event) {
 
   const { error } = await supabase.from("pageviews").insert([insertPayload]);
 
-  // --- уведомление в Telegram (опционально) ---
+  // --- уведомление в Телеграм (опционально) ---
   const loc = country ? (city ? `${country}, ${city}` : country) : "Unknown";
   const text =
 `🔔 *New View*
 📍 ${loc}
-🧭 path: ${path || "/"}
-🌍 IP(hash): \`${ip_hash.slice(0, 12)}…\`
 📱 ${os} / ${browser}`;
 
   if (!error) await sendTelegram(text);
@@ -180,7 +164,6 @@ export async function handler(event) {
     };
   }
 
-  // --- успешный ответ + анти‑кэш ---
   return {
     statusCode: 200,
     headers: { "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0" },
