@@ -2,15 +2,10 @@
 // Требуется package.json с {"type":"module"}
 
 import https from "https";
-import { createRequire } from "module";
 import CryptoJS from "crypto-js";
 import { createClient } from "@supabase/supabase-js";
 
-// geoip-lite — CommonJS, подключаем через createRequire
-const require = createRequire(import.meta.url);
-const geoip = require("geoip-lite");
-
-// node-fetch (lazy import для совместимости)
+// node-fetch (ленивая подгрузка для совместимости с бандлером)
 const fetch = (...args) => import("node-fetch").then(({ default: f }) => f(...args));
 
 // --- ENV ---
@@ -36,16 +31,14 @@ function extractIp(headers = {}) {
 function isPrivateIp(ip) {
   if (!ip) return true;
   const cleaned = ip.replace(/^\[?([^\]]+)\]?(:\d+)?$/, "$1");
-  // IPv4 private / CGNAT
   if (/^\d{1,3}(\.\d{1,3}){3}$/.test(cleaned)) {
-    const [a, b] = cleaned.split(".").map(Number);
+    const [a,b] = cleaned.split(".").map(Number);
     if (a === 10 || a === 127) return true;
     if (a === 100 && b >= 64 && b <= 127) return true; // 100.64.0.0/10
     if (a === 192 && b === 168) return true;
     if (a === 172 && b >= 16 && b <= 31) return true;
     return false;
   }
-  // IPv6 localhost/ULA
   const lc = cleaned.toLowerCase();
   if (lc === "::1" || lc.startsWith("fc") || lc.startsWith("fd")) return true;
   return false;
@@ -95,6 +88,8 @@ async function sendTelegram(text) {
 export async function handler(event) {
   // --- доступ: ключ ИЛИ тот же домен; блокируем TelegramBot UA ---
   const qs = event.queryStringParameters || {};
+  const { key } = qs;
+
   let path = qs.path || "";
   try {
     if (!path && event.body) {
@@ -103,9 +98,8 @@ export async function handler(event) {
     }
   } catch {}
 
-  const { key } = qs;
   const headers = event.headers || {};
-  const ua = headers["user-agent"] || "";
+  const ua      = headers["user-agent"] || "";
   const referer = (headers["referer"] || "").toLowerCase();
 
   const sameOrigin = referer.includes("andreyflat.space");
@@ -123,30 +117,31 @@ export async function handler(event) {
   const ipRaw = extractIp(headers) || "unknown";
   const { os, browser } = parseUA(ua);
 
-  let country = null;
+  // Пытаемся взять гео из заголовков Netlify
+  let country = headers["x-country"] || null; // ISO-2, например "ID"
   let city = null;
+  try {
+    if (headers["x-nf-geo"]) {
+      const g = JSON.parse(headers["x-nf-geo"]);
+      if (g?.country?.name || g?.country?.code) country = g.country.name || g.country.code || country;
+      if (g?.city) city = g.city;
+    }
+  } catch {}
 
-  if (ipRaw !== "unknown" && !isPrivateIp(ipRaw)) {
-    // оффлайн-гео
-    const geo = geoip.lookup(ipRaw);
-    if (geo?.country) country = geo.country; // ISO-2 код
-    if (geo?.city) city = geo.city;
-
-    // мягкая попытка добрать город из ipapi (таймаут 3с)
-    if (!city) {
-      try {
-        const ctrl = new AbortController();
-        const t = setTimeout(() => ctrl.abort(), 3000);
-        const r = await fetch(`https://ipapi.co/${ipRaw}/json/`, { signal: ctrl.signal });
-        clearTimeout(t);
-        if (r.ok) {
-          const j = await r.json();
-          city = j.city || city;
-          country = j.country_name || j.country || country;
-        }
-      } catch {
-        // игнорируем
+  // Если города нет и IP публичный — мягко попробуем ipapi.co (таймаут 3с)
+  if (!city && ipRaw !== "unknown" && !isPrivateIp(ipRaw)) {
+    try {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 3000);
+      const r = await fetch(`https://ipapi.co/${ipRaw}/json/`, { signal: ctrl.signal });
+      clearTimeout(t);
+      if (r.ok) {
+        const j = await r.json();
+        city = j.city || city;
+        country = j.country_name || j.country || country;
       }
+    } catch {
+      // игнорируем
     }
   }
 
