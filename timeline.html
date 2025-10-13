@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Andrey Flat – Timeline</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background-color: #0a0a0a;
+      color: #e5e5e5;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    header {
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      background-color: rgba(10, 10, 10, 0.85);
+      padding: 1em;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header h1 {
+      display: inline-block;
+      font-size: 2rem;
+      font-weight: 600;
+      color: #fff;
+      margin: 0;
+      transition: letter-spacing 1s ease;
+      cursor: pointer;
+    }
+
+    header p {
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 0.3em;
+      letter-spacing: 0.05em;
+    }
+
+    .timeline-container {
+      position: relative;
+      max-width: 1000px;
+      margin: 4em auto;
+      padding: 0 350px;
+    }
+
+    .timeline-line {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background-color: #404040;
+      transform: translateX(-50%);
+    }
+
+    .year-section {
+      margin-bottom: 6em;
+      position: relative;
+    }
+
+    .year-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 3em;
+      position: relative;
+    }
+
+    .year-header::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      height: 2px;
+      background-color: #404040;
+    }
+
+    .year-header h2 {
+      position: relative;
+      background-color: #0a0a0a;
+      color: #fff;
+      font-size: 1.8em;
+      font-weight: 600;
+      padding: 0 1em;
+      z-index: 1;
+    }
+
+    .project {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-bottom: 3em;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .project.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .project .card {
+      background-color: #1a1a1a;
+      padding: 1.5em;
+      border-radius: 0;
+      transition: background-color 0.3s, transform 0.2s;
+      max-width: 280px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .project .card:hover {
+      background-color: #2a2a2a;
+      transform: scale(1.02);
+    }
+
+    .project .card h3 {
+      color: #fff;
+      margin: 0 0 0.3em 0;
+      font-size: 1.1em;
+    }
+
+    .project .card p {
+      color: #999;
+      font-size: 0.9em;
+      margin: 0;
+    }
+
+    .project.left .card {
+      margin-right: calc(50% + 2rem);
+      margin-left: auto;
+    }
+
+    .project.right .card {
+      margin-left: calc(50% + 2rem);
+
+    }
+
+    .dot {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 16px;
+      height: 16px;
+      background: #fff;
+      border: 4px solid #0a0a0a;
+      border-radius: 50%;
+      z-index: 10;
+    }
+
+    .preview {
+      position: absolute;
+      top: 50%;
+      width: 300px;
+      transform: translateY(-50%) scale(0.98);
+      opacity: 0;
+      transition: all 0.4s ease;
+      border-radius: 0;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      pointer-events: none;
+      background: #000;
+      z-index: 99;
+    }
+
+    .card:hover .preview {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+    }
+
+    .preview video,
+    .preview img {
+      width: 100%;
+      height: auto;
+      border-radius: 0;
+      display: block;
+    }
+
+    .project.left .preview {
+      right: calc(100% + 1.5rem);
+    }
+
+    .project.right .preview {
+      left: calc(100% + 1.5rem);
+    }
+
+    footer {
+      text-align: center;
+      padding: 1em;
+      background-color: #111;
+      color: #777;
+      font-size: 0.9em;
+    }
+
+    #scrollToTopBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #111;
+      color: #666;
+      font-size: 1.4em;
+      padding: 0.4em 0.8em;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.4s;
+      z-index: 999;
+    }
+
+    @media (max-width: 900px) {
+      .timeline-line { left: 8px; }
+      .project.left .card, .project.right .card { margin: 0 0 0 2em; }
+      .dot { left: 0; transform: none; }
+      .preview { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1 onclick="window.location.href='index.html'">flat space</h1>
+    <p>a small space in a huge universe</p>
+  </header>
+
+  <main>
+    <div class="timeline-container">
+      <div class="timeline-line"></div>
+      <div id="timeline-content"></div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Andrey Flat</p>
+  </footer>
+
+  <button id="scrollToTopBtn" title="Rewind">&#8679;</button>
+
+  <script>
+    // === GENERATE TIMELINE ===
+    function generateTimeline(data) {
+      const container = document.getElementById('timeline-content');
+      const years = Object.keys(data).sort();
+
+      years.forEach(year => {
+        const yearSection = document.createElement('div');
+        yearSection.className = 'year-section';
+        yearSection.id = `year-${year}`;
+
+        const yearHeader = document.createElement('div');
+        yearHeader.className = 'year-header';
+        yearHeader.innerHTML = `<h2>${year}</h2>`;
+        yearSection.appendChild(yearHeader);
+
+        data[year].forEach(project => {
+          const projectDiv = document.createElement('div');
+          projectDiv.className = `project ${project.side}`;
+
+          console.log(`Project: ${project.title}, side: ${project.side}, has preview:`, !!project.preview);
+
+          const dot = document.createElement('div');
+          dot.className = 'dot';
+          projectDiv.appendChild(dot);
+
+          const card = document.createElement('div');
+          card.className = 'card';
+
+          const title = document.createElement('h3');
+          title.textContent = project.title;
+          card.appendChild(title);
+
+          const desc = document.createElement('p');
+          desc.textContent = project.description;
+          card.appendChild(desc);
+
+          if (project.preview) {
+            const preview = document.createElement('div');
+            preview.className = 'preview';
+
+            if (project.preview.type === 'video') {
+              const video = document.createElement('video');
+              video.autoplay = true;
+              video.muted = true;
+              video.loop = true;
+              video.playsInline = true;
+              const source = document.createElement('source');
+              source.src = project.preview.url;
+              source.type = 'video/mp4';
+              video.appendChild(source);
+              preview.appendChild(video);
+            } else if (project.preview.type === 'image') {
+              const img = document.createElement('img');
+              img.src = project.preview.url;
+              img.alt = project.title;
+              preview.appendChild(img);
+            }
+
+            card.appendChild(preview);
+          }
+
+          projectDiv.appendChild(card);
+          yearSection.appendChild(projectDiv);
+        });
+
+        container.appendChild(yearSection);
+      });
+    }
+
+    // Initialize
+    fetch('projects.json')
+      .then(response => response.json())
+      .then(data => {
+        generateTimeline(data);
+
+        // Fade-in animation (needs to run after timeline is generated)
+        const projects = document.querySelectorAll('.project');
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+          });
+        }, { threshold: 0.15 });
+        projects.forEach(p => observer.observe(p));
+      })
+      .catch(error => console.error('Error loading projects:', error));
+
+    // Scroll to top
+    document.getElementById('scrollToTopBtn').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Header animation
+    const h1 = document.querySelector("header h1");
+    h1.addEventListener("mouseenter", () => {
+      const maxSpacing = 12.0;
+      const spacing = Math.min(window.innerWidth / 500, maxSpacing);
+      h1.style.letterSpacing = spacing + "em";
+      h1.style.transition = "letter-spacing 5s ease";
+    });
+
+    h1.addEventListener("mouseleave", () => {
+      h1.style.letterSpacing = "";
+      h1.style.transition = "letter-spacing 1s ease";
+    });
+
+    window.addEventListener("scroll", () => {
+      const baseMaxSpacing = 0.0012;
+      const maxScroll = 3000;
+      const scrollY = window.scrollY;
+      const dynamicMaxSpacing = window.innerWidth * baseMaxSpacing;
+      const spacing = Math.min(scrollY / maxScroll * dynamicMaxSpacing, dynamicMaxSpacing);
+      if (!h1.matches(':hover')) {
+        h1.style.letterSpacing = spacing + "em";
+      }
+    });
+  </script>
+</body>
+</html>
