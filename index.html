@@ -83,8 +83,11 @@
 
     .video-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0px;
+      grid-template-columns: repeat(auto-fit, minmax(400px, max-content));
+      gap: 0;
+      justify-content: center;
+      max-width: 1920px;
+      margin: 0 auto;
     }
 
     .video-tile {
