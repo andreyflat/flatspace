@@ -1,0 +1,87 @@
+import React from 'react';
+
+export default function ProjectsTimeline() {
+  const data = {
+    2003: ['Project Alpha', 'Project Beta', 'Project Gamma'],
+    2004: ['Project Delta', 'Project Epsilon', 'Project Zeta'],
+    2005: ['Project Theta', 'Project Iota', 'Project Kappa', 'Project Lambda'],
+    2006: ['Project Mu', 'Project Nu', 'Project Xi'],
+    2010: ['Project Omicron', 'Project Pi', 'Project Rho', 'Project Sigma'],
+    2015: ['Project Tau', 'Project Upsilon', 'Project Phi', 'Project Chi'],
+    2020: ['Project Psi', 'Project Omega', 'Project Horizon'],
+    2025: ['Project Zenith', 'Project Origin', 'Project Nova', 'Project Echo']
+  };
+
+  const years = Object.keys(data).map(Number);
+  const timelineYears = [2005, 2010, 2015, 2020, 2025];
+
+  return (
+    <div className="flex bg-neutral-900 min-h-screen text-neutral-100">
+      {/* Левая панель годов */}
+      <div className="w-24 sticky top-0 h-screen flex flex-col items-center justify-center space-y-8 bg-neutral-800 border-r border-neutral-700">
+        {timelineYears.map((year) => (
+          <a
+            key={year}
+            href={`#year-${year}`}
+            className="hover:text-white text-neutral-400 transition-colors text-lg"
+          >
+            {year}
+          </a>
+        ))}
+      </div>
+
+      {/* Центральный таймлайн */}
+      <div className="relative flex-1 py-20 px-10">
+        <div className="absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-1 bg-neutral-700"></div>
+
+        {/* Года и проекты */}
+        <div className="flex flex-col space-y-24">
+          {years.map((year, i) => (
+            <div key={year} id={`year-${year}`} className="relative">
+              {/* Заголовок года */}
+              <div className="flex items-center justify-center mb-10">
+                <div className="absolute left-1/2 transform -translate-x-1/2 bg-neutral-900 px-6">
+                  <h2 className="text-2xl font-bold text-white">{year}</h2>
+                </div>
+                <div className="w-full h-[2px] bg-neutral-700"></div>
+              </div>
+
+              {/* Проекты этого года */}
+              <div className="flex flex-col space-y-16">
+                {data[year].map((title, index) => (
+                  <div
+                    key={title}
+                    className={`relative flex items-center ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}
+                  >
+                    <div
+                      className={`group relative bg-neutral-800 p-6 rounded-xl shadow-lg max-w-sm cursor-pointer hover:bg-neutral-700 transition-colors ${
+                        index % 2 === 0 ? 'mr-auto ml-[calc(50%+2rem)]' : 'ml-auto mr-[calc(50%+2rem)]'
+                      }`}
+                    >
+                      <h3 className="text-white font-semibold text-lg">{title}</h3>
+                      <p className="text-sm text-neutral-400">{year}</p>
+
+                      <img
+                        src={`https://placehold.co/300x200?text=${encodeURIComponent(title)}`}
+                        alt={title}
+                        className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-64 h-auto -top-28 left-1/2 -translate-x-1/2 border border-neutral-700 rounded-lg shadow-lg"
+                      />
+                    </div>
+
+                    <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white rounded-full border-4 border-neutral-900"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <style jsx global>{`
+        html {
+          scroll-behavior: smooth;
+        }
+      `}</style>
+    </div>
+  );
+}
