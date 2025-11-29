@@ -2,7 +2,7 @@
   "2003": [
     {
       "title": "First Render",
-      "description": "Early 3D tests with 3ds max and something else",
+      "description": "VirtualDub experience",
       "side": "left",
       "preview": {
         "type": "image",
@@ -11,7 +11,7 @@
     },
     {
       "title": "Second Render",
-      "description": "Tw 3D test",
+      "description": "TBA",
       "side": "left",
       "preview": {
         "type": "image",
@@ -19,8 +19,8 @@
       }
     },
     {
-      "title": "Tree Render",
-      "description": "Bla 3D test",
+      "title": "Third Render",
+      "description": "TBA",
       "side": "right",
       "preview": {
         "type": "image",
@@ -28,7 +28,263 @@
       }
     }
   ],
-  "2010": [
+  "2014": [
+    {
+      "title": "Finn Flare",
+      "description": "Motion",
+      "side": "left",
+      "preview": {
+        "type": "video",
+        "url": "/videos/project_20.mp4"
+      }
+    },
+    {
+      "title": "GALS",
+      "description": "Motion",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "LightFest - AEVA",
+      "description": "3D Mapping",
+      "side": "right",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "LightFest - AUTORADIO",
+      "description": "",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "LightFest - Hondroxid",
+      "description": "",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "Sergiy Radonejskii",
+      "description": "Motion Design for Stage",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "Student Show",
+      "description": "Projection mapping for Plekhanovka",
+      "side": "right",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    }
+  ],
+  "2015": [
+    {
+      "title": "AEROFLOT",
+      "description": "3D Mapping in SPB",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "AMOK",
+      "description": "Personal 3D Project",
+      "side": "right",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "BLACKSTAR",
+      "description": "Content for music clip, Supervisor, Projection Mapping",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "Blood Stairs",
+      "description": "3D simulation for Dancing with Stars on TNT",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "Burningman Decompression",
+      "description": "Touchdesigner Things",
+      "side": "right",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "Cloth Sim",
+      "description": "VFX cloth simulation",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "Dancing with Stars",
+      "description": "Projection Mapping",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "Durex",
+      "description": "VFX",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "Empire V",
+      "description": "Blood Splash for Teaser",
+      "side": "right",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "ERW70",
+      "description": "3D motion for Sportcar",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "Intervals Fest",
+      "description": "VJ, Performance",
+      "side": "right",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "Johnson&Johnson",
+      "description": "Motion Design",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "KHL",
+      "description": "Mapping",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "LightFest - Samsung",
+      "description": "3D mapping AD",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "MARS",
+      "description": "Projection Mapping on windows",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "Moneta",
+      "description": "Motion Design about Hystory of Money",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "MosLift",
+      "description": "Motion Design for Projection Screens",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "Sber Energo",
+      "description": "Motion Design",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "Sobor",
+      "description": "3D mapping",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "SPACESHIP",
+      "description": "VJ loop for Sila Sveta",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    },
+    {
+      "title": "Wedding",
+      "description": "Interactive VFX",
+      "side": "left",
+      "preview": {
+        "type": "image",
+        "url": "[https://placehold.co/300x200?text=First+Render](https://placehold.co/300x200?text=First+Render)"
+      }
+    }
+  ],
+  "2016": [
     {
       "title": "Commercial VFX",
       "description": "First studio project",
@@ -44,7 +300,7 @@
       "side": "right"
     }
   ],
-  "2020": [
+  "2017": [
     {
       "title": "Realtime Sim",
       "description": "Procedural FX",
@@ -62,18 +318,18 @@
   ],
   "2025": [
     {
-      "title": "Bevy Shooter",
-      "description": "Procedural game prototype",
-      "side": "right",
+      "title": "SPARTAK",
+      "description": "Pre-match show (2025)",
+      "side": "left",
       "preview": {
         "type": "video",
-        "url": "https://filesamples.com/samples/video/mp4/sample_960x400_ocean.mp4"
+        "url": "/videos/project_20.mp4"
       }
     },
     {
-      "title": "Shader R&D",
+      "title": "to be continued",
       "description": "Raytraced lighting test",
-      "side": "left"
+      "side": "right"
     }
   ]
 }
