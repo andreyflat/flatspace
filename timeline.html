@@ -4,37 +4,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Andrey Flat – Timeline</title>
+  <meta name="description" content="A chronological journey through the works and projects of Andrey Flat." />
+  
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet" />
 
   <style>
+    /* --- RESET & BASE --- */
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
       background-color: #0a0a0a;
       color: #e5e5e5;
       font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
     }
 
+    /* --- HEADER --- */
     header {
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       background-color: rgba(10, 10, 10, 0.85);
-      padding: 1em;
+      padding: 0.5em;
       text-align: center;
       position: sticky;
       top: 0;
       z-index: 1000;
+      border-bottom: 1px solid rgba(255,255,255,0.0);
     }
 
     header h1 {
+      margin: 0;
       display: inline-block;
+      transition: letter-spacing 0.5s ease-out;
+    }
+
+    header h1 a {
+      text-decoration: none;
+      color: #fff;
       font-size: 2rem;
       font-weight: 600;
-      color: #fff;
-      margin: 0;
-      transition: letter-spacing 1s ease;
-      cursor: pointer;
+      display: block;
+    }
+
+    header h1:hover {
+      letter-spacing: 0.5em;
+      transition: letter-spacing 2s ease;
     }
 
     header p {
@@ -44,23 +59,41 @@
       letter-spacing: 0.05em;
     }
 
+    /* --- TIMELINE CONTAINER --- */
+    main {
+      min-height: 80vh;
+    }
+
     .timeline-container {
       position: relative;
       max-width: 1920px;
       margin: 4em auto;
-      padding: 0 250px;
+      padding: 0 20px; /* Reduced padding for mobile safety */
+    }
+
+    @media (min-width: 900px) {
+        .timeline-container {
+            padding: 0 250px;
+        }
     }
 
     .timeline-line {
       position: absolute;
-      left: 50%;
+      left: 20px; /* Mobile position */
       top: 0;
       bottom: 0;
       width: 1px;
       background-color: #404040;
-      transform: translateX(-50%);
+    }
+    
+    @media (min-width: 900px) {
+        .timeline-line {
+            left: 50%;
+            transform: translateX(-50%);
+        }
     }
 
+    /* --- YEAR SECTIONS --- */
     .year-section {
       margin-bottom: 3em;
       position: relative;
@@ -69,7 +102,7 @@
     .year-header {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: center; /* Center on desktop */
       margin-bottom: 3em;
       position: relative;
     }
@@ -81,12 +114,7 @@
       left: 0;
       width: 100%;
       height: 1px;
-      background: linear-gradient(
-        to right,
-        transparent,
-        #404040,
-        transparent
-      );
+      background: linear-gradient(to right, transparent, #404040, transparent);
     }
 
     .year-header h2 {
@@ -97,16 +125,18 @@
       font-weight: 600;
       padding: 0 1em;
       z-index: 1;
+      margin: 0;
     }
 
+    /* --- PROJECT ITEMS --- */
     .project {
       position: relative;
       display: flex;
       align-items: center;
       margin-bottom: 3em;
       opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     }
 
     .project.visible {
@@ -117,16 +147,20 @@
     .project .card {
       background-color: #1a1a1a;
       padding: 1.25em;
-      border-radius: 0;
+      border: 0px solid rgba(255,255,255,0.0);
       transition: background-color 0.3s, transform 0.2s;
+      width: fit-content;
       max-width: 280px;
       cursor: pointer;
       position: relative;
+      margin-left: 40px; /* Space for line on mobile */
     }
 
     .project .card:hover {
       background-color: #2a2a2a;
-      transform: scale(1.02);
+      transform: scale(1.01);
+      border: 0px solid rgba(0,0,0,0);
+      border-color: rgba(255,255,255,0.0);
     }
 
     .project .card h3 {
@@ -139,22 +173,41 @@
       color: #999;
       font-size: 0.9em;
       margin: 0;
+      line-height: 1.5;
     }
 
-    .project.left .card {
-      margin-right: calc(50% + 2rem);
-      margin-left: auto;
+    /* Desktop Alternating Layout */
+    @media (min-width: 900px) {
+        .project .card {
+            margin: 0; /* Reset mobile margin */
+        }
+        
+        .project.left {
+            justify-content: flex-end;
+            padding-right: 50%;
+        }
+        
+        .project.right {
+            justify-content: flex-start;
+            padding-left: 50%;
+        }
+
+        .project.left .card {
+            margin-right: 2rem;
+            text-align: right;
+        }
+
+        .project.right .card {
+            margin-left: 2rem;
+            text-align: left;
+        }
     }
 
-    .project.right .card {
-      margin-left: calc(50% + 2rem);
-
-    }
-
+    /* --- DOT --- */
     .dot {
       position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
+      left: 16px; /* Mobile position (line is at 20px, dot 8px width) */
+      top: 1.5em; /* Align with card top approximately */
       width: 8px;
       height: 8px;
       background: #fff;
@@ -163,75 +216,122 @@
       z-index: 10;
     }
 
+    @media (min-width: 900px) {
+        .dot {
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    /* --- HOVER PREVIEW (Desktop Only) --- */
     .preview {
+      display: none; /* Hidden by default (mobile) */
       position: absolute;
       top: 50%;
       width: 300px;
-      transform: translateY(-50%) scale(0.98);
+      transform: translateY(-50%) scale(0.95);
       opacity: 0;
-      transition: all 0.4s ease;
-      border-radius: 0;
-      box-shadow: 0 25px 25px rgba(0, 0, 0, 0.25);
+      transition: all 0.3s ease;
+      box-shadow: 0 25px 30px rgba(0, 0, 0, 0.5);
       pointer-events: none;
       background: #000;
       z-index: 99;
+      border: 0px solid #333;
     }
 
-    .card:hover .preview {
-      opacity: 1;
-      transform: translateY(-50%) scale(1);
+    @media (min-width: 900px) {
+        .preview { display: block; }
+        
+        .card:hover .preview {
+            opacity: 1;
+            transform: translateY(-50%) scale(1);
+        }
+
+        .project.left .preview {
+            right: calc(100% + 2rem); /* Show to the left of the card */
+        }
+
+        .project.right .preview {
+            left: calc(100% + 2rem); /* Show to the right of the card */
+        }
     }
 
     .preview video,
     .preview img {
       width: 100%;
       height: auto;
-      border-radius: 0;
       display: block;
     }
 
-    .project.left .preview {
-      right: calc(100% + 1.5rem);
-    }
-
-    .project.right .preview {
-      left: calc(100% + 1.5rem);
-    }
-
+    /* --- FOOTER & SOCIALS --- */
     footer {
       text-align: center;
-      padding: 1em;
-      background-color: #111;
-      color: #777;
+      padding: 3em 1em 4em;
+      background: #111;
+      color: #555;
       font-size: 0.9em;
+      margin-top: 4em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5em;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .social-icon {
+      display: block;
+      width: 24px;
+      height: 24px;
+      fill: #555;
+      transition: fill 0.3s ease, transform 0.3s ease;
+    }
+
+    .social-icon:hover {
+      fill: #fff;
+      transform: translateY(-3px);
     }
 
     #scrollToTopBtn {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background-color: #111;
-      color: #666;
-      font-size: 1.4em;
-      padding: 0.4em 0.8em;
+      background-color: rgba(255,255,255,0.1);
+      color: #fff;
+      font-size: 1.2rem;
+      width: 50px;
+      height: 50px;
       border: none;
+      border-radius: 50%;
       cursor: pointer;
-      transition: opacity 0.4s;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.4s ease, transform 0.4s ease, background 0.3s;
+      pointer-events: none;
+      backdrop-filter: blur(5px);
       z-index: 999;
     }
 
-    @media (max-width: 900px) {
-      .timeline-line { left: 8px; }
-      .project.left .card, .project.right .card { margin: 0 0 0 2em; }
-      .dot { left: 0; transform: none; }
-      .preview { display: none; }
+    #scrollToTopBtn.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    
+    #scrollToTopBtn:hover {
+      background-color: rgba(255,255,255,0.3);
     }
   </style>
 </head>
 
 <body>
   <header>
-    <h1 onclick="window.location.href='index.html'">flat space</h1>
+    <h1><a href="index.html">flat space</a></h1>
     <p>a small space in a huge universe</p>
   </header>
 
@@ -239,20 +339,37 @@
     <div class="timeline-container">
       <div class="timeline-line"></div>
       <div id="timeline-content"></div>
+      <div id="loading" style="text-align: center; color: #555; margin-top: 2em;">loading history...</div>
     </div>
   </main>
 
   <footer>
-    <p>&copy; 2025 Andrey Flat</p>
+    <div class="social-links">
+      <a href="https://www.behance.net/andrey_flat" target="_blank" aria-label="Behance">
+        <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 7h-5v2h5V7zm0 10h-5v2h5v-2zm-5-6h5v2h-5v-2zM4.02 12.06c.6.09 1.13.3 1.56.62.43.32.74.74.93 1.25.19.51.29 1.1.29 1.77 0 .84-.15 1.57-.45 2.19-.3.62-.73 1.11-1.29 1.48-.56.37-1.24.56-2.04.56H.5v-8h3.52zM3.48 9.32h-3v-5h3c.72 0 1.32.17 1.79.51.48.34.72.82.72 1.44 0 .39-.1.74-.31 1.05-.2.31-.5.56-.88.74.52.19.92.5 1.2.94.28.44.42.98.42 1.62h2.24c0-1.07-.26-1.96-.79-2.69-.53-.73-1.26-1.1-2.19-1.12.72-.25 1.27-.63 1.64-1.13.37-.5.56-1.12.56-1.87 0-.96-.28-1.74-.83-2.32C6.49 1.11 5.71.82 4.7.82H.5v8.5h2.98zM3.1 2.89h1.34c.48 0 .84.1.98.31.2.29.3.62.3.99 0 .43-.11.78-.34 1.04-.23.26-.62.39-1.17.39H3.1V2.89zm.1 9.87v3.29h1.12c.56 0 .98-.16 1.26-.47.28-.31.42-.74.42-1.29 0-.48-.13-.88-.38-1.18-.25-.3-.64-.45-1.17-.45H3.2z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/andrey.flat" target="_blank" aria-label="Instagram">
+        <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.069-4.85.069-3.204 0-3.584-.011-4.849-.069-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <a href="mailto:andrey.flat.post@gmail.com" aria-label="Email">
+        <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </a>
+    </div>
+
+    <p>&copy; <span id="year"></span> Andrey Flat</p>
   </footer>
 
-  <button id="scrollToTopBtn" title="Rewind">&#8679;</button>
+  <button id="scrollToTopBtn" title="Up">&#8679;</button>
 
   <script>
-    // === GENERATE TIMELINE ===
+    // === TIMELINE GENERATION ===
     function generateTimeline(data) {
       const container = document.getElementById('timeline-content');
-      const years = Object.keys(data).sort();
+      document.getElementById('loading').style.display = 'none';
+
+      // Sort years: Ascending (History mode). 
+      // If you want newest first, change to: Object.keys(data).sort((a,b) => b - a)
+      const years = Object.keys(data).sort(); 
 
       years.forEach(year => {
         const yearSection = document.createElement('div');
@@ -268,15 +385,15 @@
           const projectDiv = document.createElement('div');
           projectDiv.className = `project ${project.side}`;
 
-          console.log(`Project: ${project.title}, side: ${project.side}, has preview:`, !!project.preview);
-
           const dot = document.createElement('div');
           dot.className = 'dot';
           projectDiv.appendChild(dot);
 
           const card = document.createElement('div');
           card.className = 'card';
-
+          // Make card clickable if there is a link in your JSON? 
+          // Currently assuming no link in JSON per original code.
+          
           const title = document.createElement('h3');
           title.textContent = project.title;
           card.appendChild(title);
@@ -291,19 +408,26 @@
 
             if (project.preview.type === 'video') {
               const video = document.createElement('video');
-              video.autoplay = true;
               video.muted = true;
               video.loop = true;
-              video.playsInline = true;
+              video.playsInline = true; // Important for mobile
+              
               const source = document.createElement('source');
               source.src = project.preview.url;
               source.type = 'video/mp4';
+              
               video.appendChild(source);
               preview.appendChild(video);
+              
+              // Play video only on hover to save resources
+              card.addEventListener('mouseenter', () => video.play().catch(()=>{}));
+              card.addEventListener('mouseleave', () => video.pause());
+              
             } else if (project.preview.type === 'image') {
               const img = document.createElement('img');
               img.src = project.preview.url;
               img.alt = project.title;
+              img.loading = "lazy";
               preview.appendChild(img);
             }
 
@@ -318,52 +442,92 @@
       });
     }
 
-    // Initialize
+    // === DATA FETCHING ===
     fetch('projects.json')
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) throw new Error("JSON not found");
+        return response.json();
+      })
       .then(data => {
         generateTimeline(data);
-
-        // Fade-in animation (needs to run after timeline is generated)
-        const projects = document.querySelectorAll('.project');
-        const observer = new IntersectionObserver(entries => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('visible');
-          });
-        }, { threshold: 0.15 });
-        projects.forEach(p => observer.observe(p));
+        initObserver(); // Only observe after DOM is built
       })
-      .catch(error => console.error('Error loading projects:', error));
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('loading').textContent = "Error loading timeline data.";
+      });
 
-    // Scroll to top
-    document.getElementById('scrollToTopBtn').addEventListener('click', () => {
+    // === OBSERVER (Fade-in) ===
+    function initObserver() {
+      const projects = document.querySelectorAll('.project');
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+             entry.target.classList.add('visible');
+             observer.unobserve(entry.target); // Run once per item
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      projects.forEach(p => observer.observe(p));
+    }
+
+    // === UTILS ===
+    // Dynamic Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Scroll To Top
+    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+    scrollToTopBtn.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // Header animation
+    // === PERFORMANCE OPTIMIZED SCROLL ===
     const h1 = document.querySelector("header h1");
-    h1.addEventListener("mouseenter", () => {
-      const maxSpacing = 12.0;
-      const spacing = Math.min(window.innerWidth / 500, maxSpacing);
-      h1.style.letterSpacing = spacing + "em";
-      h1.style.transition = "letter-spacing 5s ease";
-    });
-
-    h1.addEventListener("mouseleave", () => {
-      h1.style.letterSpacing = "";
-      h1.style.transition = "letter-spacing 1s ease";
-    });
+    let ticking = false;
 
     window.addEventListener("scroll", () => {
-      const baseMaxSpacing = 0.0012;
-      const maxScroll = 3000;
-      const scrollY = window.scrollY;
-      const dynamicMaxSpacing = window.innerWidth * baseMaxSpacing;
-      const spacing = Math.min(scrollY / maxScroll * dynamicMaxSpacing, dynamicMaxSpacing);
-      if (!h1.matches(':hover')) {
-        h1.style.letterSpacing = spacing + "em";
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
       }
     });
+
+    function handleScroll() {
+      const scrollY = window.scrollY;
+
+      // Header Animation (Only on Desktop)
+      if (window.innerWidth > 768 && !h1.matches(':hover')) {
+          const baseMaxSpacing = 0.0012;
+          const maxScroll = 3000;
+          const dynamicMaxSpacing = window.innerWidth * baseMaxSpacing;
+          const spacing = Math.min(scrollY / maxScroll * dynamicMaxSpacing, dynamicMaxSpacing);
+          h1.style.letterSpacing = spacing + "em";
+      }
+
+      // Show/Hide Top Button
+      if (scrollY > 500) {
+        scrollToTopBtn.classList.add("show");
+      } else {
+        scrollToTopBtn.classList.remove("show");
+      }
+    }
+    
+    // Header Desktop Hover
+    h1.addEventListener("mouseenter", () => {
+       if (window.innerWidth > 768) {
+          h1.style.letterSpacing = "0.5em";
+          h1.style.transition = "letter-spacing 2s ease";
+       }
+    });
+    h1.addEventListener("mouseleave", () => {
+       h1.style.letterSpacing = "";
+       h1.style.transition = "letter-spacing 0.5s ease-out";
+    });
+
   </script>
 </body>
 </html>
