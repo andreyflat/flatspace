@@ -1,33 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta property="og:title" content="Andrey Flat — Digital Media Artist" />
-  <meta property="og:description" content="Personal Space." />
-  <meta property="og:image" content="https://andreyflat.space/cover.jpg" />
-  <meta property="og:url" content="https://andreyflat.space/" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Andrey Flat — Space</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="description" content="Personal Space of Digital Media Artist Andrey Flat. VFX, Generative Art, Houdini, Touchdesigner works." />
+  <meta name="keywords" content="Andrey Flat, CG Artist, VFX, Houdini, Touchdesigner, Generative Art, Motion Design" />
+  <meta name="author" content="Andrey Flat" />
+  
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Andrey Flat — Digital Media Artist" />
+  <meta property="og:description" content="Personal Space. A curated selection of VFX and Generative Art." />
+  <meta property="og:image" content="https://andreyflat.space/cover.jpg" />
+  <meta property="og:url" content="https://andreyflat.space/" />
+  
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://andreyflat.space/cover.jpg" />
+
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
+    /* --- CSS RESET & BASE --- */
     body {
       background: #000;
       color: #eee;
       font-family: 'Space Grotesk', sans-serif;
       margin: 0;
       padding: 0;
+      overflow-x: hidden; /* Prevent horizontal scroll */
     }
 
+    /* --- HEADER --- */
     header {
-    backdrop-filter: blur(122px);
-    -webkit-backdrop-filter: blur(10px);
-    background-color: rgba(10, 10, 10, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background-color: rgba(10, 10, 10, 0.8);
       padding: 0.5em;
-    text-align: center;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
     }
 
     header h1 {
@@ -37,14 +51,24 @@
       text-align: center;
       max-width: 100vw;
       text-overflow: clip;
-      transition: letter-spacing 1s ease;
+      margin: 0.2em 0;
+      cursor: pointer;
+      /* Default transition */
+      transition: letter-spacing 0.5s ease-out; 
     }
 
     header h1:hover {
-      letter-spacing: 10.0em;
-      transition: letter-spacing 5s ease;
+      letter-spacing: 0.5em; /* Reduced excessive spacing for better UX */
+      transition: letter-spacing 2s ease;
     }
 
+    header p {
+      margin: 0 0 0.5em 0;
+      color: #888;
+      font-size: 0.9rem;
+    }
+
+    /* --- MAIN CONTENT --- */
     main {
       max-width: 1280px;
       margin: 1em auto;
@@ -52,23 +76,31 @@
     }
 
     section {
-      margin-bottom: 1em;
+      margin-bottom: 2em;
     }
 
-    footer {
-      text-align: center;
-      padding: 1em;
-      background: #222;
-      color: #888;
-      font-size: 0.9em;
+    p {
+      line-height: 1.6;
     }
 
+    a {
+      color: #fff;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      transition: color 0.3s;
+    }
+    a:hover {
+      color: #aaa;
+    }
+
+    /* --- VIDEO LAYOUT --- */
     .video-container {
       position: relative;
       width: 100%;
       max-width: 1280px;
       margin: 0 auto 2em;
       aspect-ratio: 16 / 9;
+      background: #111;
     }
 
     .video-container iframe {
@@ -78,25 +110,31 @@
       width: 100%;
       height: 100%;
       border: none;
-      display: block;
     }
 
     .video-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(400px, max-content));
-      gap: 0;
+      /* Responsive grid: min 300px on mobile, larger on desktop */
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 1px; /* Small gap for aesthetic */
       justify-content: center;
-      max-width: 1920px;
-      margin: 0 auto;
+      background: #000;
+    }
+
+    @media (max-width: 600px) {
+      .video-grid {
+        grid-template-columns: 1fr; /* 1 column on mobile */
+      }
     }
 
     .video-tile {
+      position: relative;
       width: 100%;
       aspect-ratio: 1 / 1;
       overflow: hidden;
-      position: relative;
-      background: #000;
-      border-radius: 0;
+      background: #050505;
+      display: block;
+      text-decoration: none;
     }
 
     .video-tile video {
@@ -104,12 +142,20 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      opacity: 0.8;
+      transition: opacity 0.3s ease, transform 0.5s ease;
+    }
+    
+    .video-tile:hover video {
+      opacity: 1;
+      transform: scale(1.02);
     }
 
+    /* Animation classes */
     .video-tile.fade-in {
       opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
 
     .video-tile.fade-in.visible {
@@ -117,105 +163,209 @@
       transform: translateY(0);
     }
 
+    /* --- CAPTIONS --- */
     .caption {
       position: absolute;
       bottom: 0;
       left: 0;
-      padding: 12px;
-      background: rgba(0, 0, 0, 0.6);
       width: 100%;
+      padding: 20px;
       box-sizing: border-box;
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
       color: #fff;
+      opacity: 0; /* Hidden by default on desktop */
       transition: opacity 0.3s ease;
-      opacity: 0;
-    }
-
-    .video-tile:hover .caption {
-      opacity: 1;
+      pointer-events: none; /* Let clicks pass through to the link */
+      z-index: 2;
     }
 
     .caption h3 {
       margin: 0;
-      font-size: 1rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .caption p {
       margin: 4px 0 0;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: #ccc;
+      line-height: 1.4;
+    }
+
+    /* Desktop Hover */
+    .video-tile:hover .caption {
+      opacity: 1;
+    }
+
+    /* --- MOBILE FIX: Always show caption on touch devices/small screens --- */
+    @media (hover: none), (max-width: 768px) {
+      .caption {
+        opacity: 1;
+        background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, rgba(0,0,0,0.4) 60%, transparent 100%);
+        padding-bottom: 25px;
+      }
+      
+      /* Reset video transform on mobile to save battery/performance */
+      .video-tile:hover video {
+        transform: none;
+      }
+    }
+    /* --- FOOTER & SOCIALS --- */
+    footer {
+      text-align: center;
+      padding: 1em 1em 2em; /* Чуть больше отступа снизу */
+      background: #111;
+      color: #555;
+      font-size: 0.9em;
+      margin-top: 2em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5em; /* Расстояние между копирайтом и иконками */
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px; /* Расстояние между иконками */
+      margin-top: 0.5em;
+    }
+
+    .social-icon {
+      display: block;
+      width: 24px;
+      height: 24px;
+      fill: #555; /* Цвет иконок в покое (как текст) */
+      transition: fill 0.3s ease, transform 0.3s ease;
+    }
+
+    .social-icon:hover {
+      fill: #fff; /* Цвет при наведении */
+      transform: translateY(-3px); /* Легкое всплытие */
     }
 
     #scrollToTopBtn {
-    position: fixed;
-    bottom: 15px;
-    right: 15px;
-    z-index: 9999;
-    background-color: #111;
-    color: #555;
-    font-size: 1.4em;
-    padding: 0.4em 0.8em;
-    border: none;
-    border-radius: 0em;
-    cursor: pointer;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-    box-shadow: 0 0px 0px rgba(0,0,0,0);
-    transition: opacity 0.5s ease;
-}
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      background-color: rgba(255,255,255,0.1);
+      color: #fff;
+      font-size: 1.2rem;
+      width: 50px;
+      height: 50px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.4s ease, transform 0.4s ease, background 0.3s;
+      pointer-events: none;
+      backdrop-filter: blur(5px);
+    }
 
+    #scrollToTopBtn.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
 
-</style>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+    #scrollToTopBtn:hover {
+      background-color: rgba(255,255,255,0.3);
+    }
+    
+    /* Loading Spinner for infinite scroll */
+    #loading-indicator {
+      text-align: center;
+      padding: 20px;
+      color: #555;
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    #loading-indicator.active {
+      opacity: 1;
+    }
+
+  </style>
 </head>
 <body>
+
   <header>
-  <h1 onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" style="cursor: pointer;">
-    flat space
-  </h1>
+    <h1 id="mainTitle" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+      flat space
+    </h1>
     <p>a small space in a huge universe</p>
   </header>
 
   <main>
     <section style="text-align: justify; max-width: 800px; margin: 0 auto;">
-  <p>Welcome to the personal space of CG artist <strong>Andrey Flat</strong>. This is a curated selection of works spanning the past 20 years.</p>
-  <p>Andrey began his creative journey in <strong>2003</strong> by experimenting with game footage, using tools like <strong>Sony Vegas, Daz 3D, and 3ds Max</strong>. By 2008, he was working in television as a video editor, focusing on <strong>After Effects</strong>.</p>
-  <p>In <strong>2011</strong>, he joined a film studio, advancing to VFX supervisor while mastering tools like <strong>Final Cut, DaVinci Resolve, Cinema 4D, Naiad, and Houdini</strong>.</p>
-  <p>Since <strong>2014</strong>, he has worked independently, specializing in procedural and generative effects with <strong>Houdini, Nuke, Touchdesigner and ComfyUI</strong>.</p>
-</section>
-<section>
-  <div class="video-container">
-    <iframe
-      src="https://www.youtube.com/embed/GwuMJhSXcj0"
-      title="Showreel 2023"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowfullscreen
-      loading="lazy">
-    </iframe>
-  </div>
-</section>
+      <p>Welcome to the personal space of CG artist <strong>Andrey Flat</strong>. This is a curated selection of works spanning the past 20 years.</p>
+      <p>Andrey began his creative journey in <strong>2003</strong> by experimenting with game footage, using tools like <strong>Sony Vegas, Daz 3D, and 3ds Max</strong>. By 2008, he was working in television as a video editor, focusing on <strong>After Effects</strong>.</p>
+      <p>In <strong>2011</strong>, he joined a film studio, advancing to VFX supervisor while mastering tools like <strong>Final Cut, DaVinci Resolve, Cinema 4D, Naiad, and Houdini</strong>.</p>
+      <p>Since <strong>2014</strong>, he has worked independently, specializing in procedural and generative effects with <strong>Houdini, Nuke, Touchdesigner and ComfyUI</strong>.</p>
+    </section>
 
-
+    <section>
+      <div class="video-container">
+        <iframe
+          src="https://www.youtube.com/embed/GwuMJhSXcj0"
+          title="Showreel 2023"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          loading="lazy">
+        </iframe>
+      </div>
+    </section>
 
     <section>
       <div class="video-grid" id="videoGrid"></div>
-    </section>
-
-    <section style="text-align: center;">
-      <p><a href="mailto:andrey.flat.post@gmail.com">make contact</a></p>
+      <div id="loading-indicator">loading works...</div>
     </section>
   </main>
+    <footer>
+      <div class="social-links">
+        
+          <a href="https://www.behance.net/andrey_flat" target="_blank" aria-label="Behance">
+          <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22 7h-5v2h5V7zm0 10h-5v2h5v-2zm-5-6h5v2h-5v-2zM4.02 12.06c.6.09 1.13.3 1.56.62.43.32.74.74.93 1.25.19.51.29 1.1.29 1.77 0 .84-.15 1.57-.45 2.19-.3.62-.73 1.11-1.29 1.48-.56.37-1.24.56-2.04.56H.5v-8h3.52zM3.48 9.32h-3v-5h3c.72 0 1.32.17 1.79.51.48.34.72.82.72 1.44 0 .39-.1.74-.31 1.05-.2.31-.5.56-.88.74.52.19.92.5 1.2.94.28.44.42.98.42 1.62h2.24c0-1.07-.26-1.96-.79-2.69-.53-.73-1.26-1.1-2.19-1.12.72-.25 1.27-.63 1.64-1.13.37-.5.56-1.12.56-1.87 0-.96-.28-1.74-.83-2.32C6.49 1.11 5.71.82 4.7.82H.5v8.5h2.98zM3.1 2.89h1.34c.48 0 .84.1.98.31.2.29.3.62.3.99 0 .43-.11.78-.34 1.04-.23.26-.62.39-1.17.39H3.1V2.89zm.1 9.87v3.29h1.12c.56 0 .98-.16 1.26-.47.28-.31.42-.74.42-1.29 0-.48-.13-.88-.38-1.18-.25-.3-.64-.45-1.17-.45H3.2z"/>
+          </svg>
+        </a>
 
-  <footer>
-    <p>&copy; 2025 Andrey Flat</p>
-  </footer>
+        <a href="https://www.instagram.com/andrey.flat" target="_blank" aria-label="Instagram">
+          <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.069-4.85.069-3.204 0-3.584-.011-4.849-.069-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+        </a>
+
+        <a href="https://youtube.com/@andreyflat" target="_blank" aria-label="YouTube">
+          <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+        </a>
+        
+        <a href="mailto:andrey.flat.post@gmail.com" aria-label="Email">
+          <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+             <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
+        </a>
+
+      </div>
+
+      <p>&copy; <span id="year"></span> Andrey Flat</p>
+    </footer>
+
+  <button id="scrollToTopBtn" title="Up">&#8679;</button>
 
 <script>
+  // --- DATA SOURCE ---
   const videoSources = [
     {
       src: "videos/project_01.mp4",
-            title: "EUCARIOTE (2021)",
-      description: "Personal project. What happens to the consciousness of a living organism under the influence of external factors?",
+      title: "EUCARIOTE (2021)",
+      description: "Personal project. Consciousness of a living organism.",
       link: "https://www.behance.net/gallery/100474835/Eucariote"
     },
     {
@@ -227,7 +377,7 @@
     {
       src: "videos/project_03.mp4",
       title: "MACROPLASTIC (2024)",
-      description: "Personal project. Reflection on how humanity, in its attempt to control nature, finds itself trapped by the waste it generates.",
+      description: "Personal project. Trapped by generated waste.",
       link: "https://www.behance.net/gallery/214236927/MACROPLASTIC"
     },
     {
@@ -239,55 +389,55 @@
     {
       src: "videos/project_05.mp4",
       title: "Experiment №80/26 (2021)",
-      description: "Personal project. Iron Kettlebell in Mercury",
+      description: "Personal project. Iron Kettlebell in Mercury.",
       link: "https://www.behance.net/gallery/130228053/Experiment-8026"
     },
     {
       src: "videos/project_06.mp4",
       title: "Waterfall (2022)",
-      description: "Exhibition. Led screen",
+      description: "Exhibition. Led screen visual.",
       link: "https://www.behance.net/gallery/146506521/WATERFALL"
     },
     {
       src: "videos/project_07.mp4",
       title: "Dry Season (2023)",
-      description: "Personal project. Simulation and visualisation experiment.",
+      description: "Simulation and visualisation experiment.",
       link: "https://www.instagram.com/p/Cy0Cg8OytWN/"
     },
     {
       src: "videos/project_08.mp4",
-      title: "HiPhi Z Rollout Show (2022)",
+      title: "HiPhi Z Rollout (2022)",
       description: "AR Electric car factory launch show.",
       link: "https://www.behance.net/gallery/148168593/HiPhi-Z-Rollout-Show"
     },
     {
       src: "videos/project_09.mp4",
-      title: "Infinix HOT 10 Play (2021)",
+      title: "Infinix HOT 10 (2021)",
       description: "Advertising video for phone.",
       link: "https://www.behance.net/gallery/116302519/Infinix-Hot-X-Play"
     },
     {
       src: "videos/project_10.mp4",
       title: "2000x2036 (2021)",
-      description: "Personal project. Destructive behavior is a practical or verbal manifestation of an individual's internal activity aimed at destroying something.",
+      description: "Personal project. Destructive behavior.",
       link: "https://www.behance.net/gallery/119929513/2000x2036"
     },
     {
       src: "videos/project_11.mp4",
       title: "EX vs REX (2020)",
-      description: "Collaboration. What came first? Egg or Dinosaur?.",
+      description: "Collaboration. What came first?",
       link: "https://www.behance.net/gallery/104782579/EX-vs-REX"
     },
     {
       src: "videos/project_12.mp4",
       title: "Bloemstilleven (2021)",
-      description: "Collaboration. Synergistic symbiosis of confrontation between humans and artificial intelligenc.",
+      description: "Confrontation between humans and AI.",
       link: "https://www.behance.net/gallery/198703355/Bloemstilleven"
     },
     {
       src: "videos/project_13.mp4",
       title: "cohærens (2024)",
-      description: "Personal project. Coherence is, in general, a state or situation in which all the parts or ideas fit together well so that they form a united whole.",
+      description: "Personal project. A state of united whole.",
       link: "https://youtu.be/tZphaJ_MWXI"
     },
     {
@@ -299,25 +449,25 @@
     {
       src: "videos/project_15.mp4",
       title: "ELEMENTS (2024)",
-      description: "LED screens surround the room. Water. Symbolizes emotions, intuition, and the flow of life.",
+      description: "LED screens. Water, emotions, intuition.",
       link: "https://www.behance.net/gallery/209820423/ELEMENTS"
     },
     {
       src: "videos/project_16.mp4",
       title: "MURAQQA - Experiment (2023)",
-      description: "TBA",
+      description: "Experimental visuals.",
       link: "https://youtu.be/oEwYm7WJNL0"
     },
     {
       src: "videos/project_17.mp4",
       title: "MURAQQA - Genesis (2023)",
-      description: "TBA",
+      description: "Generative art piece.",
       link: "https://youtu.be/ZyfbAwPa-5Q"
     },
     {
       src: "videos/project_18.mp4",
-      title: "Scene Change - Prologue (2018)",
-      description: "Grisha Bruskin's project Scene Change was first presented at the Venice Biennale 2017 in which I participated as a Motion Designer.",
+      title: "Scene Change (2018)",
+      description: "Venice Biennale 2017. Motion Designer.",
       link: "https://www.behance.net/gallery/202101993/Scene-change-Prologue"
     },
     {
@@ -334,145 +484,209 @@
     },
     {
       src: "videos/project_21.mp4",
-      title: "Black Hole (2003)",
-      description: "testiruem test",
+      title: "Black Hole",
+      description: "timeline test.",
       link: "https://andreyflat.space/timeline"
     },
   ];
-videoSources.sort(() => Math.random() - 0.5);
-function loadVideos(startIndex, count) {
-  for (let i = startIndex; i < Math.min(startIndex + count, videoSources.length); i++) {
-    const { src, title, description, link } = videoSources[i];
 
-    const tile = document.createElement('a');
-    tile.href = link || `https://andreyflat.space/projects/${i + 1}`;
-    tile.target = '_blank';
-    tile.className = 'video-tile fade-in';
+  // --- LOGIC ---
 
-    const video = document.createElement('video');
-    video.poster = `${src.replace(/\.mp4$/, '.jpg')}`;
-    video.muted = true;
-    video.loop = true;
-    video.preload = 'auto';
-    video.playsInline = true;
-    video.dataset.src = src;
+  // 1. Dynamic Year
+  document.getElementById('year').textContent = new Date().getFullYear();
 
-    const caption = document.createElement('div');
-    caption.className = 'caption';
-    caption.innerHTML = `<h3>${title}</h3><p>${description}</p>`;
-
-    tile.appendChild(video);
-    tile.appendChild(caption);
-    videoGrid.appendChild(tile);
-
-    fadeObserver.observe(tile);
-    videoObserver.observe(video);
-
-    tile.addEventListener('mouseenter', () => {
-      if (!video.src) {
-        video.src = video.dataset.src;
-        video.preload = 'auto';
-      }
-      video.play().catch(() => {});
-    });
-
-    tile.addEventListener('mouseleave', () => {
-      video.pause();
-    });
+  // 2. Improved Shuffling (Fisher-Yates)
+  // Replaces Math.random() - 0.5 which is biased
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
   }
-}
+  shuffleArray(videoSources);
 
-
+  // 3. Grid & Loading Logic
+  const videoGrid = document.getElementById('videoGrid');
+  const loadingIndicator = document.getElementById('loading-indicator');
   let loadedCount = 0;
-  const BATCH_SIZE = 3;
+  const BATCH_SIZE = 4; // Increased batch size slightly
+  let isLoading = false;
 
-  function handleScroll() {
-    const scrollY = window.scrollY + window.innerHeight;
-    const gridBottom = videoGrid.offsetTop + videoGrid.offsetHeight;
-    if (scrollY > gridBottom - 200) {
-      loadVideos(loadedCount, BATCH_SIZE);
-      loadedCount += BATCH_SIZE;
-    }
+  function loadVideos(startIndex, count) {
+    isLoading = true;
+    loadingIndicator.classList.add('active');
+
+    // Simulate small delay for UI feel or remove setTimeOut for instant
+    setTimeout(() => {
+      const limit = Math.min(startIndex + count, videoSources.length);
+      
+      for (let i = startIndex; i < limit; i++) {
+        const { src, title, description, link } = videoSources[i];
+
+        const tile = document.createElement('a');
+        tile.href = link || `https://andreyflat.space/projects/${i + 1}`;
+        tile.target = '_blank';
+        tile.className = 'video-tile fade-in';
+        tile.rel = "noopener noreferrer"; // Security best practice
+
+        const video = document.createElement('video');
+        // Fallback to jpg if poster exists, otherwise browser shows black
+        video.poster = src.replace(/\.mp4$/, '.jpg'); 
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true; // Critical for iOS
+        video.dataset.src = src;
+
+        const caption = document.createElement('div');
+        caption.className = 'caption';
+        caption.innerHTML = `<h3>${title}</h3><p>${description}</p>`;
+
+        tile.appendChild(video);
+        tile.appendChild(caption);
+        videoGrid.appendChild(tile);
+
+        // Observe for animation and playback
+        fadeObserver.observe(tile);
+        videoObserver.observe(video);
+
+        // Desktop Hover Logic (Mouse)
+        tile.addEventListener('mouseenter', () => {
+          if (!video.src) {
+             video.src = video.dataset.src;
+             video.preload = 'auto';
+          }
+          video.play().catch(() => { /* Auto-play prevention handler */ });
+        });
+
+        tile.addEventListener('mouseleave', () => {
+          video.pause();
+        });
+      }
+
+      loadedCount = limit;
+      isLoading = false;
+      loadingIndicator.classList.remove('active');
+
+      if (loadedCount >= videoSources.length) {
+        loadingIndicator.style.display = 'none';
+      }
+    }, 300);
   }
 
+  // 4. Observers
   const fadeObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.1 });
-
-const videoObserver = new IntersectionObserver((entries, observer) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const video = entry.target;
-      if (!video.src) {
-        video.src = video.dataset.src;
-        video.preload = 'auto';
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        fadeObserver.unobserve(entry.target);
       }
-      observer.unobserve(video);
-    }
-  });
-}, { rootMargin: '800px 0px' });
+    });
+  }, { threshold: 0.1 });
 
-  window.addEventListener('scroll', handleScroll);
-  window.addEventListener('load', () => {
-    loadVideos(loadedCount, BATCH_SIZE);
-    loadedCount += BATCH_SIZE;
-  });
+  const videoObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const video = entry.target;
+        // Lazy load src
+        if (!video.src) {
+          video.src = video.dataset.src;
+          video.preload = 'auto';
+        }
+        // Mobile/Touch Autoplay logic:
+        // If it's a touch device, we might want to auto-play when visible
+        // combined with the CSS caption fix.
+        if (window.matchMedia("(hover: none)").matches) {
+           video.play().catch(()=>{});
+        }
+        
+        observer.unobserve(video);
+      }
+    });
+  }, { rootMargin: '200px 0px' });
 
-  // Adapt letter-spacing based on screen width
+
+  // 5. Scroll Performance (requestAnimationFrame)
   const h1 = document.querySelector("header h1");
-  h1.addEventListener("mouseenter", () => {
-    const maxSpacing = 12.0; // max 0.8em
-    const spacing = Math.min(window.innerWidth / 500, maxSpacing);
-    h1.style.letterSpacing = spacing + "em";
-    h1.style.transition = "letter-spacing 5s ease";
-  });
-
-  h1.addEventListener("mouseleave", () => {
-    h1.style.letterSpacing = "";
-    h1.style.transition = "letter-spacing 1s ease";
-  });
+  const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+  let ticking = false;
 
   window.addEventListener("scroll", () => {
-    const baseMaxSpacing = 0.0012; // коэффициент
-    const maxScroll = 3000;
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        performScrollLogic();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  function performScrollLogic() {
     const scrollY = window.scrollY;
-    const dynamicMaxSpacing = window.innerWidth * baseMaxSpacing;
-    const spacing = Math.min(scrollY / maxScroll * dynamicMaxSpacing, dynamicMaxSpacing);
-    if (!h1.matches(':hover')) {
+    
+    // Header Animation
+    if (!h1.matches(':hover') && window.innerWidth > 768) { 
+      // Only animate letter spacing on desktop to avoid breakage on mobile
+      const baseMaxSpacing = 0.0012; 
+      const maxScroll = 3000;
+      const dynamicMaxSpacing = window.innerWidth * baseMaxSpacing;
+      const spacing = Math.min(scrollY / maxScroll * dynamicMaxSpacing, dynamicMaxSpacing);
       h1.style.letterSpacing = spacing + "em";
     }
-  });
 
-
-  const scrollToTopBtn = document.getElementById("scrollToTopBtn");
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 300) {
+    // Scroll To Top Button
+    if (scrollY > 500) {
       scrollToTopBtn.classList.add("show");
     } else {
       scrollToTopBtn.classList.remove("show");
     }
-  });
+
+    // Infinite Scroll
+    if (!isLoading && loadedCount < videoSources.length) {
+      const gridBottom = videoGrid.offsetTop + videoGrid.offsetHeight;
+      const viewBottom = scrollY + window.innerHeight;
+      if (viewBottom > gridBottom - 300) {
+        loadVideos(loadedCount, BATCH_SIZE);
+      }
+    }
+  }
+
+  // Scroll Button Click
   scrollToTopBtn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
+  // Init
+  window.addEventListener('load', () => {
+    loadVideos(loadedCount, BATCH_SIZE);
+  });
+
+  // Header interaction for desktop
+  h1.addEventListener("mouseenter", () => {
+    if (window.innerWidth > 768) {
+        h1.style.letterSpacing = "0.8em";
+        h1.style.transition = "letter-spacing 4s ease";
+    }
+  });
+  h1.addEventListener("mouseleave", () => {
+    h1.style.letterSpacing = "";
+    h1.style.transition = "letter-spacing 1s ease";
+  });
 </script>
 
 <script>
 window.addEventListener("load", () => {
   try {
-    if (sessionStorage.getItem("af_logged")) return; // не спамим: 1 раз за сессию
+    if (sessionStorage.getItem("af_logged")) return; 
     sessionStorage.setItem("af_logged", "1");
 
-    const secret = "flat_secret_123"; // тот же, что в Netlify → SECRET_KEY
+    // WARNING: Exposing secret keys in frontend code is risky. 
+    // Anyone can see this key. Use environment variables in Netlify if possible.
+    const secret = "flat_secret_123"; 
+    
     const url = "/.netlify/functions/privateViewLogger"
       + "?key="  + encodeURIComponent(secret)
       + "&path=" + encodeURIComponent(location.pathname)
-      + "&t="    + Date.now(); // ломаем кэш
+      + "&t="    + Date.now(); 
 
     if (navigator.sendBeacon) {
       const body = JSON.stringify({ path: location.pathname });
@@ -488,26 +702,6 @@ window.addEventListener("load", () => {
   } catch {}
 });
 </script>
-
-
-
-
-<button id="scrollToTopBtn" title="Rewind">&#8679;</button>
-
-<script>
-  window.addEventListener("DOMContentLoaded", () => {
-    const btn = document.getElementById("scrollToTopBtn");
-    if (!btn) return;
-
-    btn.addEventListener("click", () => {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-    });
-  });
-</script>
-
 
 </body>
 </html>
