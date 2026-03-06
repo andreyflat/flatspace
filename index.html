@@ -73,6 +73,7 @@
       max-width: 1280px;
       margin: 1em auto;
       padding: 0 1em;
+      padding-bottom: 100px;
     }
 
     section {
@@ -116,7 +117,7 @@
       display: grid;
       /* Responsive grid: min 300px on mobile, larger on desktop */
       grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-      gap: 1px; /* Small gap for aesthetic */
+      gap: 0px; /* Small gap for aesthetic */
       justify-content: center;
       background: #000;
     }
@@ -203,7 +204,7 @@
     @media (hover: none), (max-width: 768px) {
       .caption {
         opacity: 1;
-        background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, rgba(0,0,0,0.4) 60%, transparent 100%);
+        background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, rgba(0,0,0,0.75) 75%, transparent 100%);
         padding-bottom: 25px;
       }
       
@@ -215,28 +216,54 @@
     /* --- FOOTER & SOCIALS --- */
     footer {
       text-align: center;
-      padding: 1em 1em 2em; /* Чуть больше отступа снизу */
-      background: #111;
+      padding: 0.5em 1em;
+      background-color: rgba(0, 0, 0, 0.75); 
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      
       color: #555;
       font-size: 0.9em;
-      margin-top: 2em;
+      
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      justify-content: center;
       align-items: center;
-      gap: 1.5em; /* Расстояние между копирайтом и иконками */
+      gap: 40px;
+      border-top: 0px solid rgba(0,0,0,0);
+    }
+
+    @media (max-width: 768px) {
+      footer {
+        flex-direction: column;
+        gap: 0.5em;
+        padding: 0.8em;
+      }
     }
 
     .social-links {
       display: flex;
+      align-items: center;
       justify-content: center;
-      gap: 20px; /* Расстояние между иконками */
+      gap: 15px; /* Расстояние между иконками */
+      margin: 0;
       margin-top: 0.5em;
+    }
+    
+    footer p {
+        margin: 0;
+        line-height: 1;
     }
 
     .social-icon {
       display: block;
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       fill: #555; /* Цвет иконок в покое (как текст) */
       transition: fill 0.3s ease, transform 0.3s ease;
     }
@@ -246,18 +273,32 @@
       transform: translateY(-3px); /* Легкое всплытие */
     }
 
+    .footer-copyright {
+      text-align: center;
+      color: #555;
+      font-size: 0.8rem;
+      margin-top: 50px;    /* Минимальный отступ от плитки/индикатора */
+      margin-bottom: 0;
+      padding-bottom: 10px; /* Зазор до края страницы, чтобы не прилипало к футеру */
+    }
+
+    main {
+      /* Уменьшаем этот отступ, так как копирайт теперь "съедает" часть места */
+      padding-bottom: 30px; 
+    }
+
     #scrollToTopBtn {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
+      bottom: 0px;
+      right: 40px;
       z-index: 9999;
-      background-color: rgba(255,255,255,0.1);
+      background-color: rgba(55,55,55,0.5);
       color: #fff;
       font-size: 1.2rem;
-      width: 50px;
-      height: 50px;
+      width: 40px;
+      height: 40px;
       border: none;
-      border-radius: 50%;
+      border-radius: 0%;
       cursor: pointer;
       opacity: 0;
       transform: translateY(20px);
@@ -284,6 +325,7 @@
       font-size: 0.8rem;
       opacity: 0;
       transition: opacity 0.3s;
+      margin-bottom: 20px;
     }
     #loading-indicator.active {
       opacity: 1;
@@ -320,8 +362,13 @@
     <section>
       <div class="video-grid" id="videoGrid"></div>
       <div id="loading-indicator">loading works...</div>
+
+      <p class="footer-copyright">
+        &copy; <span id="year"></span> Andrey Flat
+      </p>
     </section>
   </main>
+
     <footer>
       <div class="social-links">
         
@@ -351,7 +398,6 @@
 
       </div>
 
-      <p>&copy; <span id="year"></span> Andrey Flat</p>
     </footer>
 
   <button id="scrollToTopBtn" title="Up">&#8679;</button>
