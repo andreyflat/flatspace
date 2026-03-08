@@ -722,7 +722,7 @@ window.addEventListener("load", () => {
     if (sessionStorage.getItem("af_logged")) return; 
     sessionStorage.setItem("af_logged", "1");
 
-    // WARNING: Exposing secret keys in frontend code is risky. 
+    // WARNING: Exposing secret keys in frontend code is risky.  commet
     // Anyone can see this key. Use environment variables in Netlify if possible.
     const secret = "flat_secret_123"; 
     
