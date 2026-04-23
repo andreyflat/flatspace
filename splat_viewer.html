@@ -137,8 +137,9 @@
                 const camera = new GSPLAT.Camera();
                 const controls = new GSPLAT.OrbitControls(camera, renderer.canvas);
 
-                // Adjust camera initial position
-                camera.position.set(0, 0, 5);
+                // Adjust camera initial position (GSPLAT uses camera.data.position)
+                camera.data.position.set(0, 0, 5);
+                controls.update();
 
                 // Resize handler
                 const resize = () => {
