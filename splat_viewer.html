@@ -128,18 +128,22 @@
             const loading = document.getElementById('loading');
 
             try {
-                // Initialize Renderer
-                const renderer = new GSPLAT.WebGLRenderer();
-                container.appendChild(renderer.canvas);
-
                 // Initialize Scene
                 const scene = new GSPLAT.Scene();
                 const camera = new GSPLAT.Camera();
+                const renderer = new GSPLAT.WebGLRenderer();
+                container.appendChild(renderer.canvas);
+
                 const controls = new GSPLAT.OrbitControls(camera, renderer.canvas);
 
-                // Adjust camera initial position (GSPLAT uses camera.data.position)
-                camera.data.position.set(0, 0, 5);
-                controls.update();
+                // Set camera position safely
+                if (camera.position) {
+                    camera.position.set(0, 0, 5);
+                } else if (camera.data && camera.data.position) {
+                    camera.data.position.set(0, 0, 5);
+                }
+
+                if (controls.update) controls.update();
 
                 // Resize handler
                 const resize = () => {
@@ -150,9 +154,11 @@
 
                 // Load the Splat file
                 status.innerText = "Downloading compressed Splat...";
-                
+
                 // Using the .splat file provided by user
-                await GSPLAT.loadAsync(
+                // Try GSPLAT.Loader first, fallback to LoadAsync if needed
+                const loader = GSPLAT.Loader ? GSPLAT.Loader : GSPLAT;
+                await loader.loadAsync(
                     "/models/gs/nebula_rnd1.splat", 
                     scene,
                     (progress) => {
@@ -160,7 +166,6 @@
                         status.innerText = `Loading: ${percent}%`;
                     }
                 );
-
                 loading.style.display = 'none';
 
                 // Animation loop
