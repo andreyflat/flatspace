@@ -120,7 +120,8 @@
     </div>
 
     <script type="module">
-        import * as GSPLAT from 'https://cdn.jsdelivr.net/npm/gsplat@latest/dist/index.js';
+        // Using a pinned version for stability
+        import * as SPLAT from "https://cdn.jsdelivr.net/npm/gsplat@1.2.9/dist/index.es.min.js";
 
         async function init() {
             const container = document.getElementById('container');
@@ -128,23 +129,12 @@
             const loading = document.getElementById('loading');
 
             try {
-                // Initialize Scene
-                const scene = new GSPLAT.Scene();
-                const camera = new GSPLAT.Camera();
-                const renderer = new GSPLAT.WebGLRenderer();
+                const renderer = new SPLAT.WebGLRenderer();
                 container.appendChild(renderer.canvas);
 
-                const controls = new GSPLAT.OrbitControls(camera, renderer.canvas);
-
-                // Set camera position safely
-                const pos = camera.position || (camera.data ? camera.data.position : null);
-                if (pos) {
-                    pos.x = 0;
-                    pos.y = 0;
-                    pos.z = 5;
-                }
-
-                if (controls.update) controls.update();
+                const scene = new SPLAT.Scene();
+                const camera = new SPLAT.Camera();
+                const controls = new SPLAT.OrbitControls(camera, renderer.canvas);
 
                 // Resize handler
                 const resize = () => {
@@ -154,32 +144,20 @@
                 resize();
 
                 // Load the Splat file
-                status.innerText = "Downloading compressed Splat...";
+                status.innerText = "Downloading Splat...";
+                
+                await SPLAT.Loader.LoadAsync("/models/gs/nebula_rnd1.splat", scene, (progress) => {
+                    status.innerText = `Loading: ${Math.round(progress * 100)}%`;
+                });
 
-                // Using the .splat file provided by user
-                console.log("GSPLAT object:", GSPLAT);
-                const loader = GSPLAT.Loader ? GSPLAT.Loader : GSPLAT;
-                console.log("Selected loader:", loader);
-
-                // Try various loading methods
-                if (typeof GSPLAT.loadAsync === "function") {
-                    await GSPLAT.loadAsync("/models/gs/nebula_rnd1.splat", scene, (progress) => {
-                        status.innerText = `Loading: ${Math.round(progress * 100)}%`;
-                    });
-                } else if (GSPLAT.Loader && typeof GSPLAT.Loader.LoadAsync === "function") {
-                    await GSPLAT.Loader.LoadAsync("/models/gs/nebula_rnd1.splat", scene, (progress) => {
-                        status.innerText = `Loading: ${Math.round(progress * 100)}%`;
-                    });
-                } else if (typeof GSPLAT.PLYLoader === "object" && GSPLAT.PLYLoader.LoadAsync) {
-                     await GSPLAT.PLYLoader.LoadAsync("/models/gs/nebula_rnd1.splat", scene, (progress) => {
-                        status.innerText = `Loading: ${Math.round(progress * 100)}%`;
-                    });
-                } else {
-                    throw new Error("No valid loader found in GSPLAT library. Check console for structure.");
-                }
                 loading.style.display = 'none';
 
-                // Animation loop
+                // Set initial camera position AFTER loading, 
+                // because some models might be very far from origin
+                camera.position.z = 5;
+                camera.position.y = 1;
+                controls.update();
+
                 const frame = () => {
                     controls.update();
                     renderer.render(scene, camera);
@@ -187,9 +165,11 @@
                 };
                 requestAnimationFrame(frame);
 
+                console.log("Splat loaded successfully into scene", scene);
+
             } catch (error) {
-                console.error(error);
-                status.innerText = "Error loading splat: " + error.message;
+                console.error("Error in GSPLAT init:", error);
+                status.innerText = "Error: " + error.message;
                 status.style.color = "#ff4444";
                 document.querySelector('.spinner').style.display = 'none';
             }
