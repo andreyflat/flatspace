@@ -137,10 +137,11 @@
                 const controls = new GSPLAT.OrbitControls(camera, renderer.canvas);
 
                 // Set camera position safely
-                if (camera.position) {
-                    camera.position.set(0, 0, 5);
-                } else if (camera.data && camera.data.position) {
-                    camera.data.position.set(0, 0, 5);
+                const pos = camera.position || (camera.data ? camera.data.position : null);
+                if (pos) {
+                    pos.x = 0;
+                    pos.y = 0;
+                    pos.z = 5;
                 }
 
                 if (controls.update) controls.update();
