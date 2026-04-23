@@ -157,16 +157,26 @@
                 status.innerText = "Downloading compressed Splat...";
 
                 // Using the .splat file provided by user
-                // Try GSPLAT.Loader first, fallback to LoadAsync if needed
+                console.log("GSPLAT object:", GSPLAT);
                 const loader = GSPLAT.Loader ? GSPLAT.Loader : GSPLAT;
-                await loader.loadAsync(
-                    "/models/gs/nebula_rnd1.splat", 
-                    scene,
-                    (progress) => {
-                        const percent = Math.round(progress * 100);
-                        status.innerText = `Loading: ${percent}%`;
-                    }
-                );
+                console.log("Selected loader:", loader);
+
+                // Try various loading methods
+                if (typeof GSPLAT.loadAsync === "function") {
+                    await GSPLAT.loadAsync("/models/gs/nebula_rnd1.splat", scene, (progress) => {
+                        status.innerText = `Loading: ${Math.round(progress * 100)}%`;
+                    });
+                } else if (GSPLAT.Loader && typeof GSPLAT.Loader.LoadAsync === "function") {
+                    await GSPLAT.Loader.LoadAsync("/models/gs/nebula_rnd1.splat", scene, (progress) => {
+                        status.innerText = `Loading: ${Math.round(progress * 100)}%`;
+                    });
+                } else if (typeof GSPLAT.PLYLoader === "object" && GSPLAT.PLYLoader.LoadAsync) {
+                     await GSPLAT.PLYLoader.LoadAsync("/models/gs/nebula_rnd1.splat", scene, (progress) => {
+                        status.innerText = `Loading: ${Math.round(progress * 100)}%`;
+                    });
+                } else {
+                    throw new Error("No valid loader found in GSPLAT library. Check console for structure.");
+                }
                 loading.style.display = 'none';
 
                 // Animation loop
